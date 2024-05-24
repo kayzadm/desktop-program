@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <main>
+        <div class="header-navigation">
+            <div class="header-navigation-menu">
+                <button id="showHideMenus" class="navigationBtn menuBtn"></button>
+            </div>
+            <div class="header-navigation-logo"><img src="images/phddobrasil.png" alt=""></div>
+            <div class="header-navigation-btns">
+                <button class="navigationBtn minimizeBtn" title="Minimize"></button>
+                <button class="navigationBtn maximizeBtn" title="Maximize"></button>
+                <button class="navigationBtn closeBtn" title="Close"></button>
+            </div>
+        </div>
+        <div class="contentArea">
+            <div id="mySidebar" class="leftMenu">
+                <button class="navigationBtn moduloBtn user" id="iframeBtn">
+                    <img src="icons/do-utilizador.png" alt="">
+                    <h4>Leonardo Vanzella</h4>
+                </button>
+                <div class="modulo">
+                    <button class="navigationBtn moduloBtn" id="ModuloDrop">
+                        <p>Cursos</p>
+                    </button>
+                    <!--<div class="ModuloMenu">
+                        <button class="OptionBtn moduloBtn" id="iframeBtn2" class="iframeBtn">
+                            test
+                        </button>
+                        <button class="OptionBtn moduloBtn">
+                            test
+                        </button><button class="OptionBtn moduloBtn">
+                            test
+                        </button>
+                    </div>-->
+                </div>
+            </div>
+            <iframe src="" frameborder="0" id="iframe"></iframe>
+        </div>
+    </main>
+    <script src="js/appFunction.js"></script>
+</body>
+
+</html>

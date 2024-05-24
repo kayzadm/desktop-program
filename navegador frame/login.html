@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="css/login.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="contentArea">
+        <div class="login">
+            <div class="login-text">
+                <div id="response"></div>
+                <span>Seja Bem vindo</span>
+                <span>a Phd do Brasil!</span>
+            </div>
+            <div class="login-area">
+                <form id="form">
+                    <label for="email">Email</label><br>
+                    <input type="text" class="login-input" id="email" placeholder="Email" name="email"><br>
+                    <label for="senha">Senha</label><br>
+                    <input type="password" class="login-input" id="password" placeholder="Senha" name="password">
+                    <br>
+                    <input type="checkbox" name="check">
+                    <label for="check" class="label-check">Lembre-se de mim</label>
+                    <br>
+                    <div class="button-form">
+                        <button class="loginBtn" id="loginBtn">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const $ = require('jquery');
+        $("#form").on('submit', function (e) {
+
+            // nao submeter o form pelo php
+            e.preventDefault();
+
+            // ajax
+            $.ajax({
+                type: 'POST',
+                url: 'http://192.168.10.80/api/auth',
+                data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                beforeSend: function () {
+                    $("#response").html('');
+                    $("#loginBtn").val('validando...');
+                },
+                success: function (response) {
+                    
+                    $("#loginBtn").val('entrar');
+                    $("#loginBtn").removeAttr("disabled");
+
+                    if (!response.errors && !response.message) {
+                        window.location.replace('index.html') + response.redirect
+                        /*document.querySelector('.loginBtn').addEventListener('click', () => {
+                           iframe.style.display = 'flex'
+                           login.style.display = 'none'
+                           leftMenu.style.display = 'flex'
+                           mySidebar.style.width = '225px'
+                           menu.forEach(element => {
+                               element.style.visibility = 'visible';
+                           })
+                       })*/
+
+                    } else {
+                        $("#response").html('<div  class="alert alert-danger" role="alert">' + response.errors.email + '</div>');
+                        $("#response").html('<div  class="alert alert-danger" role="alert">' + response.message + '</div>');
+                        if (response.message) {
+                            $.each(response.message, function (i, val) {
+                                $("#response").append('<ul class="list-unstyled"> <li class="text-danger">' + val + '</li> </ul>');
+
+                            })
+                        }
+                        if (response.errors) {
+                            $.each(response.errors, function (key, value) {
+
+                                $("#response").append('<ul class="list-unstyled"> <li class="text-danger">' + value + '</li> </ul>');
+
+                            });
+                        }
+
+                        setTimeout(function () {
+                            $("#response").html('');
+                            $("#response").removeClass('alert alert-danger');
+                        }, 3000);
+                    }
+                },
+                errors: function () {
+                    alert('Erro ao enviar formulário, por favor contate nosso suporte:(11)94952-2579 E-mail: console.tech@outlook.com');
+                    $("#loginBtn").val('entrar');
+                    $("#loginBtn").removeAttr("disabled");
+                },
+
+            });
+
+        });
+
+
+        //para desabilitar o button quando enviar o formulario
+        $("form").submit(function () {
+            $(this).find(":submit").attr('disabled', 'disabled');
+        });
+    </script>
+</body>
+
+</html>

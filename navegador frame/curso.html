@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/curso.css">
+</head>
+
+<body>
+    <div class="content">
+        <h1>Cursos Disponiveis</h1>
+        <div class="cursosArea">
+            <div class="slider">
+                <div class="buttonArea">
+                    <button id="moveLeft-cursosTop" class="moveLeft"></button>  
+                </div>
+                <div class="slider-area--Top" id="sliderArea">
+                    <div class="cursosArea-left slide-track" id="cursosTop">
+                    </div>
+                </div>
+                <div class="buttonArea">
+                    <button id="moveRight-cursosTop" class="moveRight"></button>
+                </div>
+            </div>
+            <div class="slider">
+                <div class="buttonArea">
+                    <button id="moveLeft-cursosBottom" class="moveLeft"></button>  
+                </div>
+                <div class="slider-area--Bottom">
+                    <div class="cursosArea-right" id="cursosBottom">
+                    </div>
+                </div>
+                <div class="buttonArea">
+                    <button id="moveRight-cursosBottom" class="moveRight"></button>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <script src="js/curso.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#moveLeft-cursosTop').click(function () {
+                $('.slider-area--Top').scrollLeft($('.slider-area--Top').scrollLeft() - 300);
+            });
+            $('#moveRight-cursosTop').click(function () {
+                $('.slider-area--Top').scrollLeft($('.slider-area--Top').scrollLeft() + 300);
+            });
+            $('#moveLeft-cursosBottom').click(function () {
+                $('.slider-area--Bottom').scrollLeft($('.slider-area--Bottom').scrollLeft() - 300);
+            });
+            $('#moveRight-cursosBottom').click(function () {
+                $('.slider-area--Bottom').scrollLeft($('.slider-area--Bottom').scrollLeft() + 300);
+            });
+        });
+
+        
+        
+    </script>
+</body>
+
+</html>

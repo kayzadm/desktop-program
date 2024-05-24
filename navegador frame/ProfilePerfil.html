@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/Profile.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="ProfileArea none">
+        <div class="ProfileAcount">
+            <div class="ProfileImage">
+                <img src="icons/do-utilizador.png" alt="">
+            </div>
+            <div class="ProfileAdress">
+                <div class="ProfileCampo" id="profileAdress">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="ProfileInfos">
+            <div class="ProfileName--area  ProfileName" id="ProfileAreaA">
+
+            </div>
+            <div class="ProfileAge--area" id="ProfileAreaB">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const $profileAdress = $('#profileAdress')
+        const $profileA = $('#ProfileAreaA')
+        const $profileB = $('#ProfileAreaB')
+
+        $.ajax({
+            url: 'http://localhost:3000/profile',
+            method: 'GET',
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data) {
+                console.log(data)
+                $.each(data, function (i, profile) {
+                    $profileAdress.append(`
+                    <p for="Email">Email:</p>
+                    <br>
+                    <span>${profile.email}</span>`)
+                });
+                $.each(data, function (i, profile) {
+                    $profileA.append(`
+                    <p>Nome:</p>
+                    <span>${profile.name}</span>`)
+                });
+                $.each(data, function (i, profile) {
+                    $profileB.append(`
+                    <p>Acesso:</p>
+                    <span>${profile.group}</span>`)
+                });
+
+            },
+            error: function (xhr, status, error) {
+                console.error('Erro ao fazer a requisição:', status, error);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

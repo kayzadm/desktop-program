@@ -1,0 +1,76 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+}
+body {
+    background-color: #222;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+.content {
+    display: flex;
+    padding: 10px;
+    
+}
+.content-area {
+    width: 95%;
+    height: 100%;
+    margin: auto;
+    background-color: #555;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+}
+.video {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+.video video {
+    width: 95%;
+}
+.modulo {
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.modulo--item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+}
+.moduloBtn {
+    background-color: #00bcb5;
+    width: 95%;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin: auto;
+}
+.aulasItens {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    
+}
+.aulasItens button {
+    width: 95%;
+    margin: auto;
+    height: 20px;
+    color: #ccc;
+    border-radius: 5px;
+    background-color: #777;
+    border: none;
+    outline: none;
+}
+.aulasItens button:hover {
+    background-color: #222;
+    color: #00bcb5;
+}
