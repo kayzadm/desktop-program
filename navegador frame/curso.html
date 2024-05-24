@@ -11,20 +11,9 @@
 <body>
     <div class="content">
         <h1>Cursos Disponiveis</h1>
-        <div class="cursosArea">
-            <div class="slider">
-                <div class="buttonArea">
-                    <button id="moveLeft-cursosTop" class="moveLeft"></button>  
-                </div>
-                <div class="slider-area--Top" id="sliderArea">
-                    <div class="cursosArea-left slide-track" id="cursosTop">
-                    </div>
-                </div>
-                <div class="buttonArea">
-                    <button id="moveRight-cursosTop" class="moveRight"></button>
-                </div>
-            </div>
-            <div class="slider">
+        <div class="cursosArea" id="cursosArea">
+            
+            <!-- <div class="slider">
                 <div class="buttonArea">
                     <button id="moveLeft-cursosBottom" class="moveLeft"></button>  
                 </div>
@@ -35,7 +24,7 @@
                 <div class="buttonArea">
                     <button id="moveRight-cursosBottom" class="moveRight"></button>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
@@ -46,6 +35,91 @@
     <script src="js/curso.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
+        // const $ = require('jquery');
+        const $cursosArea = $('#cursosArea');
+        $.ajax({
+                type: 'GET',
+                url: 'http://localhost:3000/categories',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response)
+                    $.each(response, function(i, item){
+                        $cursosArea.append(`
+                        <div class="slider">
+                            
+                <div class="buttonArea">
+                    <button id="moveLeft-cursosTop" class="moveLeft"></button>  
+                </div>
+                <div class="slider-area--Top" id="sliderArea">
+                    <div class="cursosArea-left slide-track" id="cursosTop">
+                        ${item.courses}
+                    </div>
+                </div>
+                <div class="buttonArea">
+                    <button id="moveRight-cursosTop" class="moveRight"></button>
+                </div>
+            </div>
+                        `)
+                    })
+                    $.each(response, function(i, item){
+                        $cursosArea.append(`
+                        <div class="slider">
+                            
+                <div class="buttonArea">
+                    <button id="moveLeft-cursosTop" class="moveLeft"></button>  
+                </div>
+                <div class="slider-area--Top" id="sliderArea">
+                    <div class="cursosArea-left slide-track" id="cursosTop">
+                        ${item.courses}
+                    </div>
+                </div>
+                <div class="buttonArea">
+                    <button id="moveRight-cursosTop" class="moveRight"></button>
+                </div>
+            </div>
+                        `)
+                    })
+            }});
+
+    //         success: function(response) {
+    // console.log(response);
+    // $.each(response, function(i, categoria) {
+    //     // Cria um elemento HTML para cada categoria
+    //     var categoriaHtml = `
+    //         <div class="categoria">
+    //             <h2>${categoria.name}</h2>
+    //             <div class="cursos">
+    //     `;
+        
+    //     // Adiciona os cursos da categoria à estrutura HTML
+    //     $.each(categoria.courses, function(j, course) {
+    //         categoriaHtml += `
+    //             <div class="curso">
+    //                 <img src="${course.img}" alt="${course.title}">
+    //                 <h3>${course.title}</h3>
+    //                 <p>${course.description}</p>
+    //                 <p>Autor: ${course.author}</p>
+    //                 <a href="${course.link}" target="_blank">Ver curso</a>
+    //             </div>
+    //         `;
+//     //     });
+        
+//         // Fecha a div da categoria
+//         categoriaHtml += '</div></div>';
+        
+//         // Adiciona a estrutura HTML da categoria à área de cursos
+//         $('#cursosArea').append(categoriaHtml);
+//     });
+// }
+
+
+
+
+
+
+
+
+
         $(document).ready(function () {
             $('#moveLeft-cursosTop').click(function () {
                 $('.slider-area--Top').scrollLeft($('.slider-area--Top').scrollLeft() - 300);

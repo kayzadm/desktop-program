@@ -7,7 +7,6 @@
     "backend": "json-server --watch db/db.json",
     "aulas": "json-server --watch db/aulas.json",
     "profile": "json-server --watch db/profile.json"
-    
   },
   "keywords": [],
   "author": "",
