@@ -6,29 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/aulas.css">
     <title>Document</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
 </head>
 
 <body>
-    <div class="content">
-        <div class="content-area">
-            <div class="video">
-                <h1>Facial</h1>
-                <video src="" controls></video>
-            </div>
-            <div class="modulo-container">
-                <div class="modulo--titulo">
-                    <h1>Conteúdo do curso</h1>
-                </div>
-                <div class="modulosAulas modulo-container" >
-                    <div class="modulo" id="modulo">
-                        
-                    </div>
-                </div>
-            </div>
+    <header id="header">
+        <div class="logo"><img src="images/phddobrasil.png" alt=""></div>
+        <h1 id="tituloAula">Seja Bem Vindo!</h1>
+    </header>
+    <div class="content" id="content">
+        <div class="videoArea">
+            <video src="https://tekeye.uk/html/images/Joren_Falls_Izu_Jap.mp4" id="videoPlayer" controls></video>
+        </div>
+        <div class="modulos" id="modulos">
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/aulas.js"></script>
+    <script>
+        const $ = require('jquery');
+         $(document).ready(function () {
+            $.ajax({
+                url: 'http://localhost:3000/aulas', // Substitua pela URL do seu endpoint
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    var content = $('#modulos');
+
+                    response.forEach(function (aulas) {
+                        console.log(aulas)
+
+                        var categoryHtml = `<button class="aula-btn" data-video="${aulas.link}" data-title="${aulas.title}">${aulas.title}</button>`;
+                        
+                        content.append(categoryHtml);
+                    });
+                    content.on('click', '.aula-btn', function () {
+                        var link = $(this).data('video');
+                        var title = $(this).data('title');
+                        var videoPlayer = $('#videoPlayer');
+                        var tituloAula = $('#tituloAula');
+                        videoPlayer.attr('src', link);
+                        videoPlayer[0].load();
+                        tituloAula.text(title);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro ao obter os dados: ', error);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

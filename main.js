@@ -15,7 +15,7 @@ function createWindow () {
     }
   })
 
-  win.loadFile('navegador frame/login.html')
+  win.loadFile('navegador frame/aulas.html')
   win.setBackgroundColor('#222')
 
   ipc.on('minimizeApp', () => {

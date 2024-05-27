@@ -138,6 +138,83 @@
                     "link": "https://www.youtube.com/watch?v=YhxjNYvJbgM&list=RDMMYhxjNYvJbgM&start_radio=1&ab_channel=billyjoelVEVO"
                 }
             ]
+        },
+        {
+            "id": "3",
+            "name": "Pele",
+            "courses": [
+                {
+                    "id": "1",
+                    "title": "Facial",
+                    "img": "https://phddobrasil.com.br/wp-content/uploads/2024/05/pdrn-phd-do-brasil.png",
+                    "description": "Curso voltado para bla bla bla",
+                    "author": "Judas",
+                    "link": "../navegador frame/aulas.html",
+                    "aulas": [
+                        {
+                            "id": "1",
+                            "title": "Facial",
+                            "sequency": "",
+                            "link": "../navegador frame/aulas.html"
+                        }
+                    ]
+                },
+                {
+                    "id": "2",
+                    "title": "Corporal",
+                    "img": "https://phddobrasil.com.br/wp-content/uploads/2024/05/Grupo-de-rolagem-2.jpg",
+                    "description": "Curso voltado para bla bla bla",
+                    "author": "Judas",
+                    "link": "https://phddobrasil.com.br/",
+                    "aulas": [
+                        {
+                            "id": "1",
+                            "title": "Facial",
+                            "sequency": "",
+                            "link": "../navegador frame/aulas.html"
+                        },
+                        {
+                            "id": "1",
+                            "title": "Facial",
+                            "sequency": "",
+                            "link": "../navegador frame/aulas.html"
+                        }
+                    ]
+                },
+                
+                {
+                    "id": "3",
+                    "title": "Corporal",
+                    "img": "https://phddobrasil.com.br/wp-content/uploads/2024/05/Grupo-de-rolagem-2.jpg",
+                    "description": "Curso voltado para bla bla bla",
+                    "author": "Judas",
+                    "link": "https://phddobrasil.com.br/"
+                },
+                {
+                    "id": "4",
+                    "title": "Corporal",
+                    "img": "https://phddobrasil.com.br/wp-content/uploads/2024/05/Grupo-de-rolagem-2.jpg",
+                    "description": "Curso voltado para bla bla bla",
+                    "author": "Judas",
+                    "link": "https://phddobrasil.com.br/"
+                },
+                {
+                    "id": "5",
+                    "title": "Corporal",
+                    "img": "https://phddobrasil.com.br/wp-content/uploads/2024/05/Grupo-de-rolagem-2.jpg",
+                    "description": "Curso voltado para bla bla bla",
+                    "author": "Judas",
+                    "link": "https://phddobrasil.com.br/"
+                },
+                {
+                    "id": "6",
+                    "title": "Corporal",
+                    "img": "https://phddobrasil.com.br/wp-content/uploads/2024/05/Grupo-de-rolagem-2.jpg",
+                    "description": "Curso voltado para bla bla bla",
+                    "author": "Judas",
+                    "link": "https://phddobrasil.com.br/"
+                }
+            ]
         }
     ]
 }

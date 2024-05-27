@@ -36,10 +36,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const $ = require('jquery');
+        const { remote } = require('electron');
+        const path = require('path');
         $("#form").on('submit', function (e) {
 
             // nao submeter o form pelo php
             e.preventDefault();
+            const email = $('#email').val();
+            const password = $('#password').val();
 
             // ajax
             $.ajax({
@@ -55,12 +59,14 @@
                     $("#loginBtn").val('validando...');
                 },
                 success: function (response) {
-                    
+
                     $("#loginBtn").val('entrar');
                     $("#loginBtn").removeAttr("disabled");
 
                     if (!response.errors && !response.message) {
-                        window.location.replace('index.html') + response.redirect
+                        localStorage.setItem('sessionToken', response.token);
+                        console.log('Token armazenado:', localStorage.getItem('sessionToken')); // Verifique o valor do token armazenado
+                        window.location.replace('index.html');
                         /*document.querySelector('.loginBtn').addEventListener('click', () => {
                            iframe.style.display = 'flex'
                            login.style.display = 'none'
@@ -109,6 +115,21 @@
         $("form").submit(function () {
             $(this).find(":submit").attr('disabled', 'disabled');
         });
+
+        if (window.location.pathname.endsWith('index.html')) {
+            const token = localStorage.getItem('sessionToken');
+            if (!token) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        const logoutButton = document.getElementById('logout');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('sessionToken');
+                window.location.href = 'login.html';
+            });
+        }
     </script>
 </body>
 
