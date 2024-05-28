@@ -16,7 +16,10 @@
     "electron": "^30.0.5"
   },
   "dependencies": {
+    "bourbon": "^7.3.0",
+    "express": "^4.19.2",
     "jquery": "^3.7.1",
-    "json-server": "^1.0.0-beta.0"
+    "json-server": "^1.0.0-beta.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }

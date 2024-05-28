@@ -12,9 +12,10 @@
     <div class="contentArea">
         <div class="login">
             <div class="login-text">
-                <div id="response"></div>
+
                 <span>Seja Bem vindo</span>
                 <span>a Phd do Brasil!</span>
+                <div id="response"></div>
             </div>
             <div class="login-area">
                 <form id="form">
@@ -30,6 +31,8 @@
                         <button class="loginBtn" id="loginBtn">Login</button>
                     </div>
                 </form>
+
+
             </div>
         </div>
     </div>
@@ -78,13 +81,13 @@
                        })*/
 
                     } else {
-                        $("#response").html('<div  class="alert alert-danger" role="alert">' + response.errors.email + '</div>');
-                        $("#response").html('<div  class="alert alert-danger" role="alert">' + response.message + '</div>');
-                        if (response.message) {
+                        if (typeof response.message === 'string') {
+                            console.log(response.message);
+                            $("#response").append('<p class="text-danger">' + response.message + '</p>');
+                        } else if (Array.isArray(response.message)) {
                             $.each(response.message, function (i, val) {
                                 $("#response").append('<ul class="list-unstyled"> <li class="text-danger">' + val + '</li> </ul>');
-
-                            })
+                            });
                         }
                         if (response.errors) {
                             $.each(response.errors, function (key, value) {
@@ -115,7 +118,6 @@
         $("form").submit(function () {
             $(this).find(":submit").attr('disabled', 'disabled');
         });
-
         if (window.location.pathname.endsWith('index.html')) {
             const token = localStorage.getItem('sessionToken');
             if (!token) {

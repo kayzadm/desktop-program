@@ -10,20 +10,14 @@
 
 <body>
     <div class="content">
-        <h1>Cursos Disponiveis</h1>
+        <h1>Cursos Disponíveis</h1>
         <div class="cursosArea" id="categorias-container">
-            <!-- <div class="slider">
-                <div class="slider-area--Bottom">
-                    <div class="cursosArea-right" id="cursosBottom">
-                    </div>
-                </div>
-            </div> -->
+            <!-- O conteúdo será carregado dinamicamente aqui -->
         </div>
     </div>
     <script src="js/curso.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-        // const $ = require('jquery');
         $(document).ready(function () {
             $.ajax({
                 url: 'http://localhost:3000/categories', // Substitua pela URL do seu endpoint
@@ -32,41 +26,43 @@
                 success: function (response) {
                     var categoriasContainer = $('#categorias-container');
 
-                    response.forEach(function (category) {
-                        console.log(category)
-                        var categoryHtml = `<h1>${category.name}</h1>
-                        <div class="slider">
+                    response.forEach(function (category, categoryIndex) {
+                        console.log(category);
+                        var categoryHtml = `<div class="titleCourse"><h1>${category.name}</h1></div>
+                        <div class="slider" id="slider-${categoryIndex}">
                             <div class="buttonArea">
-                <button id="moveLeft-cursosBottom" class="moveLeft"></button> 
-            </div>
-                            `;
+                                <button id="moveLeft-${categoryIndex}" class="moveLeft"></button> 
+                            </div>`;
                         
-                        categoryHtml += '<div class="slider-area--Top">';
+                        categoryHtml += `<div class="slider-area--Top" id="slider-area-${categoryIndex}">`;
 
                         category.courses.forEach(function (course) {
                             var courseHtml = `
-                            
-                           
-                                <a href="${course.link}" class="cursosArea-left slide-track" id="cursosTop">
-                                                    <img src="${course.img}">
-                                                    <h3>${course.title}</h3>
-                                                    <p>${course.description}</p>
-                                                    <p> Autor: ${course.author}</p>
-
-                                    </a>
-                                    
-                                    `
-
-                           
+                                <a href="${course.link}" class="cursosArea-left slide-track">
+                                    <img src="${course.img}">
+                                    <h3>${course.title}</h3>
+                                    <p>${course.description}</p>
+                                    <p>Autor: ${course.author}</p>
+                                </a>`;
                             categoryHtml += courseHtml;
                         });
 
                         categoryHtml += `</div>
-                        <div class="buttonArea">
-                                        <button id="moveRight-cursosBottom" class="moveRight"></button>
-                                    </div>`;
-                        categoryHtml += '</div>';
+                            <div class="buttonArea">
+                                <button id="moveRight-${categoryIndex}" class="moveRight"></button>
+                            </div>
+                        </div>`;
                         categoriasContainer.append(categoryHtml);
+                    });
+
+                    // Associa os botões de rolagem aos sliders
+                    response.forEach(function (category, categoryIndex) {
+                        $('#moveLeft-' + categoryIndex).click(function () {
+                            $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() - 300);
+                        });
+                        $('#moveRight-' + categoryIndex).click(function () {
+                            $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() + 300);
+                        });
                     });
                 },
                 error: function (xhr, status, error) {
@@ -74,24 +70,6 @@
                 }
             });
         });
-       
-        $(document).ready(function () {
-            $('#moveLeft-cursosTop').click(function () {
-                $('.slider-area--Top').scrollLeft($('.slider-area--Top').scrollLeft() - 300);
-            });
-            $('#moveRight-cursosTop').click(function () {
-                $('.slider-area--Top').scrollLeft($('.slider-area--Top').scrollLeft() + 300);
-            });
-            $('#moveLeft-cursosBottom').click(function () {
-                $('.slider-area--Bottom').scrollLeft($('.slider-area--Bottom').scrollLeft() - 300);
-            });
-            $('#moveRight-cursosBottom').click(function () {
-                $('.slider-area--Bottom').scrollLeft($('.slider-area--Bottom').scrollLeft() + 300);
-            });
-        });
-
-
-
     </script>
 </body>
 

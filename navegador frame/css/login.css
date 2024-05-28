@@ -32,13 +32,25 @@ main {
     display: flex;
 }
 #response {
-    font-size: 10px;
+    font-size: 13px;
     flex-direction: column;
     display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 5px;
     background-color: rgb(255, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    margin-top: 7px;
+    width: 90%;
+    color: #DDD;
+}
+#response ul {
+    list-style: none;
+    padding: 3px;
 }
 .login-text {
+    position: relative;
     flex-direction: column;
     display: flex;
     align-items: center;
@@ -47,11 +59,15 @@ main {
     font-size: 20px;
     font-weight: bold;
     background-color: rgb(0, 188, 181, 0.9);
+    color: #DDD;
     border-top-left-radius: 5%;
     border-bottom-left-radius: 5%;
 }
 .login-area {
+    position: relative;
     flex: 1;
+    height: 100%;
+    flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,7 +93,7 @@ main {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 .loginBtn {
     background-color: #00bcb5;

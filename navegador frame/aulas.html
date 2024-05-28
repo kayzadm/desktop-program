@@ -10,17 +10,22 @@
 </head>
 
 <body>
-    <header id="header">
-        <div class="logo"><img src="images/phddobrasil.png" alt=""></div>
-        <h1 id="tituloAula">Seja Bem Vindo!</h1>
-    </header>
+    
     <div class="content" id="content">
         <div class="videoArea">
             <video src="https://tekeye.uk/html/images/Joren_Falls_Izu_Jap.mp4" id="videoPlayer" controls></video>
+            <header id="header">
+                <h1 id="tituloAula">Seja Bem Vindo!</h1>
+            </header>
         </div>
+        
         <div class="modulos" id="modulos">
+            <div class="titleModulos"><h1>Aulas</h1></div>
+            <!-- <a href="#" class="btn btn-white btn-animate  moduloBtn2" id="ModuloDrop">cursos</a> -->
         </div>
+        
     </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/aulas.js"></script>
     <script>
@@ -36,18 +41,22 @@
                     response.forEach(function (aulas) {
                         console.log(aulas)
 
-                        var categoryHtml = `<button class="aula-btn" data-video="${aulas.link}" data-title="${aulas.title}">${aulas.title}</button>`;
+                        var categoryHtml = `
+                        <button class="btn btn-white btn-animate  aula-btn" data-video="${aulas.link}" data-title="${aulas.title}" data-id="${aulas.id}">${aulas.id}: ${aulas.title}</button>
+                        
+                        `;// <button class="aula-btn" data-video="${aulas.link}" data-title="${aulas.title}">${aulas.title}</button>
                         
                         content.append(categoryHtml);
                     });
                     content.on('click', '.aula-btn', function () {
                         var link = $(this).data('video');
                         var title = $(this).data('title');
+                        var id = $(this).data('id')
                         var videoPlayer = $('#videoPlayer');
                         var tituloAula = $('#tituloAula');
                         videoPlayer.attr('src', link);
                         videoPlayer[0].load();
-                        tituloAula.text(title);
+                        tituloAula.text(`${id}: ${title}`);
                     });
                 },
                 error: function (xhr, status, error) {

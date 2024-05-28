@@ -6,6 +6,7 @@ const ipc = ipcRenderer
 const maxResBtn = document.querySelector('maximizeBtn')
 const mySidebar = document.getElementById('mySidebar')
 const menu = document.querySelectorAll('.moduloBtn')
+const menuBtn = document.querySelector('.moduloBtn2')
 const leftMenu = document.querySelector('.leftMenu')
 const iframe = document.getElementById('iframe');
 const login = document.querySelector('.login')
@@ -40,17 +41,23 @@ ipc.on('isRestored', () => { changeMaxResBtn(false) })
 //menu lateral
 showHideMenus.addEventListener('click', () => {
     if (isLeftMenuActive) {
+        menu.forEach(element => {
+            element.style.display = 'none';
+        })
+        menuBtn.style.display = 'none';
+        
         mySidebar.style.width = '0px'
-        menu.forEach(element => {
-            element.style.visibility = 'hidden';
-        })
         isLeftMenuActive = false
+        
     } else {
-        mySidebar.style.width = '225px'
         menu.forEach(element => {
-            element.style.visibility = 'visible';
+            element.style.display = 'flex';
         })
+        menuBtn.style.display = 'inline-block';
+        
+        mySidebar.style.width = '225px'
         isLeftMenuActive = true
+        
     }
 })
 
