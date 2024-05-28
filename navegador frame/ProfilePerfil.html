@@ -14,54 +14,28 @@
     <div class="ProfileArea none">
         <div class="ProfileAcount">
             <div class="ProfileImage">
-                <img src="icons/do-utilizador.png" alt="">
+                <!-- <img src="icons/do-utilizador.png" alt=""> -->
             </div>
-            <div class="ProfileAdress">
-                <div class="ProfileCampo" id="profileAdress">
-                    
-                </div>
-            </div>
-        </div>
-        <div class="ProfileInfos">
-            <div class="ProfileName--area  ProfileName" id="ProfileAreaA">
+            <div class="ProfileAdress" id="profileAdress">
 
-            </div>
-            <div class="ProfileAge--area" id="ProfileAreaB">
             </div>
         </div>
     </div>
 
     <script>
-        const $profileAdress = $('#profileAdress')
-        const $profileA = $('#ProfileAreaA')
-        const $profileB = $('#ProfileAreaB')
-
+        const token = localStorage.getItem('sessionToken');
         $.ajax({
-            url: 'http://localhost:3000/profile',
-            method: 'GET',
-            dataType: 'json',
-            contentType: false,
-            cache: false,
-            processData: false,
+            type: 'GET',
+            url: 'http://192.168.10.80/api/user',
+            headers: { 'Authorization': 'Bearer ' + token },
             success: function (data) {
                 console.log(data)
-                $.each(data, function (i, profile) {
-                    $profileAdress.append(`
-                    <p for="Email">Email:</p>
-                    <br>
-                    <span>${profile.email}</span>`)
-                });
-                $.each(data, function (i, profile) {
-                    $profileA.append(`
-                    <p>Nome:</p>
-                    <span>${profile.name}</span>`)
-                });
-                $.each(data, function (i, profile) {
-                    $profileB.append(`
-                    <p>Acesso:</p>
-                    <span>${profile.group}</span>`)
-                });
+                const profileInfo = `<div class="ProfileCampo" id="profileAdress">
+                    <p>${data.email}</p>
+                    <p>${data.name}</p>
+                </div>`
 
+                $('#profileAdress').append(profileInfo)
             },
             error: function (xhr, status, error) {
                 console.error('Erro ao fazer a requisição:', status, error);

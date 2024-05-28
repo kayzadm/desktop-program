@@ -9,6 +9,14 @@
 </head>
 
 <body>
+    <div class="header-navigation">
+        <div class="header-navigation-logo"><img src="images/phddobrasil.png" alt=""></div>
+        <div class="header-navigation-btns">
+            <button class="navigationBtn minimizeBtn" title="Minimize"></button>
+            <button class="navigationBtn maximizeBtn" title="Maximize"></button>
+            <button class="navigationBtn closeBtn" title="Close"></button>
+        </div>
+    </div>
     <div class="contentArea">
         <div class="login">
             <div class="login-text">
@@ -41,6 +49,56 @@
         const $ = require('jquery');
         const { remote } = require('electron');
         const path = require('path');
+        const { ipcRenderer } = require('electron')
+        const ipc = ipcRenderer
+        const maxResBtn = document.querySelector('maximizeBtn')
+        const login = document.querySelector('.login')
+        var isLeftMenuActive = true
+
+        document.querySelector('.closeBtn').addEventListener('click', () => {
+            ipc.send('closeApp')
+        })
+        document.querySelector('.minimizeBtn').addEventListener('click', () => {
+            ipc.send('minimizeApp')
+        })
+        function changeMaxResBtn(isMaximizedApp) {
+            if (isMaximizedApp) {
+                maxResBtn.title = 'Restore'
+                maxResBtn.classList.remove('maximizeBtn')
+                maxResBtn.classList.add('restoreBtn')
+            } else {
+                maxResBtn.title = 'Maximize'
+                maxResBtn.classList.remove('restoreBtn')
+                maxResBtn.classList.add('maximizeBtn')
+            }
+        }
+        document.querySelector('.maximizeBtn').addEventListener('click', () => {
+            ipc.send('maximizeRestoreApp')
+        })
+        ipc.on('isMaximized', () => { changeMaxResBtn(true) })
+        ipc.on('isRestored', () => { changeMaxResBtn(false) })
+
+        $(document).ready(function () {
+                const token = localStorage.getItem('sessionToken');
+
+                if (!token) {
+                    console.log('ola')
+                } else {
+                    $.ajax({
+                        type: 'GET',
+                        url: 'http://192.168.10.80/api/user',
+                        headers: { 'Authorization': 'Bearer ' + token },
+                        success: function (response) {
+                            window.location.href = 'index.html'
+                        },
+                        error: function () {
+                            // window.location.href = 'login.html';
+                        }
+                    });
+                }
+            }
+        );
+
         $("#form").on('submit', function (e) {
 
             // nao submeter o form pelo php
@@ -68,18 +126,7 @@
 
                     if (!response.errors && !response.message) {
                         localStorage.setItem('sessionToken', response.token);
-                        console.log('Token armazenado:', localStorage.getItem('sessionToken')); // Verifique o valor do token armazenado
                         window.location.replace('index.html');
-                        /*document.querySelector('.loginBtn').addEventListener('click', () => {
-                           iframe.style.display = 'flex'
-                           login.style.display = 'none'
-                           leftMenu.style.display = 'flex'
-                           mySidebar.style.width = '225px'
-                           menu.forEach(element => {
-                               element.style.visibility = 'visible';
-                           })
-                       })*/
-
                     } else {
                         if (typeof response.message === 'string') {
                             console.log(response.message);
@@ -112,9 +159,6 @@
             });
 
         });
-
-
-        //para desabilitar o button quando enviar o formulario
         $("form").submit(function () {
             $(this).find(":submit").attr('disabled', 'disabled');
         });

@@ -120,6 +120,11 @@ main {
     transition: 0.4s;
     gap: 20px
 }
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .btn:link,
 .btn:visited {
     color: #fff;
@@ -154,7 +159,9 @@ main {
 .btn::after {
     text-align: center;
     content: "";
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
     width: 100%;
     border-radius: 100px;

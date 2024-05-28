@@ -5,7 +5,7 @@
             "name": "facial",
             "courses": [
                 {
-                    "id": "1",
+                    "course_id": "1",
                     "title": "Facial",
                     "img": "https://phddobrasil.com.br/wp-content/uploads/2024/05/pdrn-phd-do-brasil.png",
                     "description": "Curso voltado para bla bla bla",
@@ -13,7 +13,7 @@
                     "link": "../navegador frame/aulas.html",
                     "aulas": [
                         {
-                            "id": "1",
+                            "classes_id": "1",
                             "title": "Facial",
                             "sequency": "",
                             "link": "../navegador frame/aulas.html"

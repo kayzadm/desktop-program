@@ -6,31 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/aulas.css">
     <title>Document</title>
-    
+
 </head>
 
 <body>
-    
+
     <div class="content" id="content">
         <div class="videoArea">
-            <video src="https://tekeye.uk/html/images/Joren_Falls_Izu_Jap.mp4" id="videoPlayer" controls></video>
+            <video src="" id="videoPlayer" controls controls controlsList="nodownload"></video>
             <header id="header">
                 <h1 id="tituloAula">Seja Bem Vindo!</h1>
             </header>
+            <div class="comment">
+                <h1>em caso de duvidas deixe um comentario</h1>
+                <div class="commentList" id="commentList">
+
+                </div>
+                <div class="commentInput">
+                    <textarea id="comment" placeholder="Comentários"></textarea>
+                    <button id="send">enter</button>
+                </div>
+            </div>
         </div>
-        
+
         <div class="modulos" id="modulos">
-            <div class="titleModulos"><h1>Aulas</h1></div>
+            <div class="titleModulos">
+                <h1>Aulas</h1>
+            </div>
             <!-- <a href="#" class="btn btn-white btn-animate  moduloBtn2" id="ModuloDrop">cursos</a> -->
         </div>
-        
+
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/aulas.js"></script>
     <script>
-        const $ = require('jquery');
-         $(document).ready(function () {
+
+        // const $ = require('jquery');
+        $(document).ready(function () {
             $.ajax({
                 url: 'http://localhost:3000/aulas', // Substitua pela URL do seu endpoint
                 method: 'GET',
@@ -39,13 +52,12 @@
                     var content = $('#modulos');
 
                     response.forEach(function (aulas) {
-                        console.log(aulas)
 
                         var categoryHtml = `
                         <button class="btn btn-white btn-animate  aula-btn" data-video="${aulas.link}" data-title="${aulas.title}" data-id="${aulas.id}">${aulas.id}: ${aulas.title}</button>
                         
                         `;// <button class="aula-btn" data-video="${aulas.link}" data-title="${aulas.title}">${aulas.title}</button>
-                        
+
                         content.append(categoryHtml);
                     });
                     content.on('click', '.aula-btn', function () {
@@ -61,6 +73,49 @@
                 },
                 error: function (xhr, status, error) {
                     console.error('Erro ao obter os dados: ', error);
+                }
+            });
+        });
+
+
+        $(document).ready(function () {
+            let nomeUsuario = "";
+            const token = localStorage.getItem('sessionToken');
+            // Função para buscar o nome do usuário logado
+            function buscarNomeUsuario(token) {
+                $.ajax({
+                    method: 'GET',
+                    url: 'http://192.168.10.80/api/user',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    success: function (data) {
+                        nomeUsuario = data.name;
+                        console.log("Nome do usuário:", nomeUsuario);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
+                    }
+                });
+            }
+
+            // Buscar o nome do usuário quando a página carregar
+            buscarNomeUsuario(token);
+
+            $("#send").click(function () {
+                // Obtém o valor do comentário
+                const comentario = $("#comment").val();
+
+                // Verifica se o campo de comentário não está vazio
+                if (comentario.trim() !== "" && nomeUsuario !== "") {
+                    // Cria um novo elemento de parágrafo para o comentário
+                    const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
+
+                    // Adiciona o novo comentário à lista de comentários
+                    $("#commentList").append(novoComentario);
+
+                    // Limpa o campo de comentário
+                    $("#comment").val("");
+                } else {
+                    alert("Por favor, escreva um comentário antes de enviar.");
                 }
             });
         });

@@ -7,9 +7,7 @@ const maxResBtn = document.querySelector('maximizeBtn')
 const mySidebar = document.getElementById('mySidebar')
 const menu = document.querySelectorAll('.moduloBtn')
 const menuBtn = document.querySelector('.moduloBtn2')
-const leftMenu = document.querySelector('.leftMenu')
 const iframe = document.getElementById('iframe');
-const login = document.querySelector('.login')
 var isLeftMenuActive = true
 
 document.querySelector('.closeBtn').addEventListener('click', () => {
@@ -65,7 +63,7 @@ showHideMenus.addEventListener('click', () => {
 
 //iframe
 ModuloDrop.addEventListener('click', () => {
-    iframe.src = 'curso.html'
+    iframe.src = 'aulas.html'
 })
 document.getElementById('iframeBtn').addEventListener('click', () => {
     iframe.src = 'ProfilePerfil.html'

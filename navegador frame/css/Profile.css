@@ -43,8 +43,15 @@ html, body {
     justify-content: center;
     flex-direction: column;
 }
-p {
-    margin: 0;
+.ProfileCampo p {
+    margin-top: 5px;
+    background-color: #00BCB5;
+    border: 0;
+    outline: none;
+    padding: 5px;
+    border-radius: 5px;
+    color: #EEE;
+    width: 100%;
 }
 .ProfileCampo {
     width: 80%;

@@ -1,28 +1,16 @@
-// const $ = require('jquery')
-// var $modulo = $('#modulo')
-// var $item = $('#item')
-// $.ajax({
-//     url: 'http://localhost:3000/categories',
-//     method: 'GET',
-//     dataType: 'json',
-//     contentType: false,
-//     cache: false,
-//     processData: false,
-//     success: function (data) {
-//         console.log(data)
-//         $.each(data, function (categoryIndex, category) {
-//             $.each(category.courses, function (courseIndex, course) {
-//                 $modulo.append(`<div class="modulo--item">
-//                 <button class="moduloBtn" >${course.title}</button>
-//             </div>`)
-//             });
-//         });
-//     },
-//     error: function (xhr, status, error) {
-//         console.error('Erro ao fazer a requisição:', status, error);
+// document.getElementById("send").addEventListener("click", function() {
+//     const comentario = document.getElementById("comment").value;
+    
+//     if (comentario.trim() !== "") {
+//         const novoComentario = document.createElement("p");
+
+//         novoComentario.textContent = comentario
+
+//         document.getElementById("commentList").append(novoComentario)
+
+//         document.getElementById("comment").value = "";
+
+//     }else {
+//         console.log(comentario)
 //     }
-// });
-
-
-
-// // enviar formulário
+// })

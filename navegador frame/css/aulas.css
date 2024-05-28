@@ -19,6 +19,7 @@ header {
     height: 50px;
     color: #fff;
     background-color: rgb(0, 188, 181, 0.3);
+    margin-bottom: 3px;
 }
 ::-webkit-scrollbar {
     width: 5px;
@@ -92,6 +93,10 @@ header h1 {
     border-radius: 5px;
     font-size: 18px;
     height: 50px;
+    
+}
+.btn:last-child {
+    margin-bottom: 50px;
 }
 
 .btn:link,
@@ -168,4 +173,51 @@ header h1 {
         opacity: 1;
         transform: translateY(0px);
     }
+}
+.comment {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    color: #fff;
+}
+.comment h1 {
+    color: #026d6a;
+    text-transform: uppercase;
+    font-size: 16px;
+    width: 100%;
+    background-color: #000;
+}
+.commentList {
+    width: 100%;
+    height: 140px;
+    background-color: #000;
+}
+#comment::placeholder {
+    color: #FFF;
+    font-size: 14px;
+}
+.commentInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+}
+#comment {
+    outline: none;
+    width: 100%;
+    background-color: rgb(0, 188, 181, 0.7);
+    resize: none;
+}
+#send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+    padding: 10px;
+    right: 0;
+    height: 40px;
+    color: #ddd;
+    background-color: rgb(0, 188, 181, 0.7);
 }

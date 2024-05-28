@@ -25,8 +25,7 @@
         <div class="contentArea">
             <div id="mySidebar" class="leftMenu">
                 <button class="navigationBtn moduloBtn user" id="iframeBtn">
-                    <img src="icons/do-utilizador.png" alt="">
-                    <h4>Leonardo Vanzella</h4>
+                    
                 </button>
                 <div class="modulo">
                     <a href="#" class="btn btn-white btn-        animate  moduloBtn2" id="ModuloDrop">cursos</a>
@@ -52,98 +51,32 @@
     <script>
         const { remote } = require('electron');
         const path = require('path');
-        $("#form").on('submit', function (e) {
-
-            // nao submeter o form pelo php
-            e.preventDefault();
-            const email = $('#email').val();
-            const password = $('#password').val();
-
-            // ajax
-            $.ajax({
-                type: 'POST',
-                url: 'http://192.168.10.80/api/auth',
-                data: new FormData(this),
-                dataType: 'json',
-                contentType: false,
-                cache: false,
-                processData: false,
-                beforeSend: function () {
-                    $("#response").html('');
-                    $("#loginBtn").val('validando...');
-                },
-                success: function (response) {
-
-                    $("#loginBtn").val('entrar');
-                    $("#loginBtn").removeAttr("disabled");
-
-                    if (!response.errors && !response.message) {
-                        localStorage.setItem('sessionToken', response.token);
-                        console.log('Token armazenado:', localStorage.getItem('sessionToken')); // Verifique o valor do token armazenado
-                        window.location.replace('index.html');
-                        /*document.querySelector('.loginBtn').addEventListener('click', () => {
-                           iframe.style.display = 'flex'
-                           login.style.display = 'none'
-                           leftMenu.style.display = 'flex'
-                           mySidebar.style.width = '225px'
-                           menu.forEach(element => {
-                               element.style.visibility = 'visible';
-                           })
-                       })*/
-
-                    } else {
-                        $("#response").html('<div  class="alert alert-danger" role="alert">' + response.errors.email + '</div>');
-                        $("#response").html('<div  class="alert alert-danger" role="alert">' + response.message + '</div>');
-                        if (response.message) {
-                            $.each(response.message, function (i, val) {
-                                $("#response").append('<ul class="list-unstyled"> <li class="text-danger">' + val + '</li> </ul>');
-
-                            })
-                        }
-                        if (response.errors) {
-                            $.each(response.errors, function (key, value) {
-
-                                $("#response").append('<ul class="list-unstyled"> <li class="text-danger">' + value + '</li> </ul>');
-
-                            });
-                        }
-
-                        setTimeout(function () {
-                            $("#response").html('');
-                            $("#response").removeClass('alert alert-danger');
-                        }, 3000);
-                    }
-                },
-                errors: function () {
-                    alert('Erro ao enviar formulário, por favor contate nosso suporte:(11)94952-2579 E-mail: console.tech@outlook.com');
-                    $("#loginBtn").val('entrar');
-                    $("#loginBtn").removeAttr("disabled");
-                },
-
-            });
-
-        });
-
-
-        //para desabilitar o button quando enviar o formulario
-        $("form").submit(function () {
-            $(this).find(":submit").attr('disabled', 'disabled');
-        });
-
-        if (window.location.pathname.endsWith('index.html')) {
+        $(document).ready(function () {
             const token = localStorage.getItem('sessionToken');
+            console.log
             if (!token) {
                 window.location.href = 'login.html';
-            }
-        }
+            } else {
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://192.168.10.80/api/user',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    success: function (response) {
+                        const btnProfile = `
+                        <img src="${response.iamge}" alt="">
+                        <h4>${response.name}</h4>
+                        `
 
-        const logoutButton = document.getElementById('logout');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', () => {
-                localStorage.removeItem('sessionToken');
-                window.location.href = 'login.html';
-            });
-        }
+
+                        $('#iframeBtn').append(btnProfile)    
+                    },
+                    error: function () {
+                        window.location.href = 'login.html';
+                    }
+                });
+            }
+        });
+
 
     </script>
 </body>

@@ -8,11 +8,87 @@
 body {
     width: 100vw;
     height: 100vh;
-}
-main {
-    width: 100vw;
-    height: 100vh;
     overflow: hidden;
+}
+.header-navigation {
+    background-color: #333;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.header-navigation-logo {
+    flex: 2;
+    -webkit-app-region: drag;
+    padding: 5px;
+}
+
+.header-navigation-logo img {
+    width: 40px;
+}
+
+.header-navigation-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.header-navigation-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navigationBtn {
+    width: 40px;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.navigationBtn:hover {
+    background-color: rgb(0, 188, 181, 0.4);
+}
+
+.navigationBtn:active {
+    background-color: rgb(0, 188, 181, );
+}
+
+.menuBtn {
+    background-image: url(../icons/menu-aberto.png);
+    background-size: 50%;
+}
+
+.menuBtn:hover {
+    background-image: url(../icons/menu-aberto\ branco.png);
+}
+
+.restoreBtn {
+    background-image: url(../icons/redimensionar.png);
+    background-size: 20%;
+}
+
+.minimizeBtn {
+    background-image: url(../icons/minimize-o-sinal.png);
+    background-size: 20%;
+}
+
+.maximizeBtn {
+    background-image: url(../icons/maximizar.png);
+    background-size: 20%;
+}
+
+.closeBtn {
+    background-image: url(../icons/botao-fechar.png);
+    background-size: 20%;
 }
 .contentArea {
     display: flex;
