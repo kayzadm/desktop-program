@@ -17,16 +17,16 @@
             <header id="header">
                 <h1 id="tituloAula">Seja Bem Vindo!</h1>
             </header>
-            <div class="comment">
+            <!-- <div class="comment">
                 <h1>em caso de duvidas deixe um comentario</h1>
-                <div class="commentList" id="commentList">
-
+                <div class="commentList-Area">
+                    <div class="commentList" id="commentList"></div>
                 </div>
                 <div class="commentInput">
-                    <textarea id="comment" placeholder="Comentários"></textarea>
-                    <button id="send">enter</button>
+                    <textarea id="comment" placeholder="Comentários" keypress></textarea>
+                    <button id="send"><img src="icons/send_icon_232367.png" alt=""></button>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="modulos" id="modulos">
@@ -41,11 +41,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/aulas.js"></script>
     <script>
-
+        var tokenLocalStorage = localStorage.getItem('sessionToken');
+        var tokenSessionStorage = sessionStorage.getItem('sessionToken');
         // const $ = require('jquery');
         $(document).ready(function () {
             $.ajax({
-                url: 'http://localhost:3000/aulas', // Substitua pela URL do seu endpoint
+                url: 'http://localhost:3000/aulas',
                 method: 'GET',
                 dataType: 'json',
                 success: function (response) {
@@ -77,48 +78,94 @@
             });
         });
 
+        if (tokenLocalStorage !== null) {
+            var token = localStorage.getItem('sessionToken');
+            $(document).ready(function () {
+                let nomeUsuario = "";
+                // Função para buscar o nome do usuário logado
+                function buscarNomeUsuario(token) {
+                    $.ajax({
+                        method: 'GET',
+                        url: 'http://192.168.10.80/api/user',
+                        headers: { 'Authorization': 'Bearer ' + token },
+                        success: function (data) {
+                            nomeUsuario = data.name;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
+                        }
+                    });
+                }
 
-        $(document).ready(function () {
-            let nomeUsuario = "";
-            const token = localStorage.getItem('sessionToken');
-            // Função para buscar o nome do usuário logado
-            function buscarNomeUsuario(token) {
-                $.ajax({
-                    method: 'GET',
-                    url: 'http://192.168.10.80/api/user',
-                    headers: { 'Authorization': 'Bearer ' + token },
-                    success: function (data) {
-                        nomeUsuario = data.name;
-                        console.log("Nome do usuário:", nomeUsuario);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
+                // Buscar o nome do usuário quando a página carregar
+                buscarNomeUsuario(token);
+
+                function enviarComentario() {
+                    const comentario = $("#comment").val();
+                    if (comentario.trim() !== "" && nomeUsuario !== "") {
+                        const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
+                        $("#commentList").append(novoComentario);
+                        $("#comment").val("");
+                        $("#commentList").scrollTop($("#commentList")[0].scrollHeight);
+                    }
+                }
+                $("#send").click(function () {
+                    enviarComentario();
+                });
+
+                $("#comment").keypress(function (event) {
+                    if (event.which === 13) {
+                        event.preventDefault();
+                        enviarComentario();
                     }
                 });
-            }
 
-            // Buscar o nome do usuário quando a página carregar
-            buscarNomeUsuario(token);
-
-            $("#send").click(function () {
-                // Obtém o valor do comentário
-                const comentario = $("#comment").val();
-
-                // Verifica se o campo de comentário não está vazio
-                if (comentario.trim() !== "" && nomeUsuario !== "") {
-                    // Cria um novo elemento de parágrafo para o comentário
-                    const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
-
-                    // Adiciona o novo comentário à lista de comentários
-                    $("#commentList").append(novoComentario);
-
-                    // Limpa o campo de comentário
-                    $("#comment").val("");
-                } else {
-                    alert("Por favor, escreva um comentário antes de enviar.");
-                }
             });
-        });
+        }
+        if (tokenSessionStorage !== null) {
+            var token = sessionStorage.getItem('sessionToken');
+            $(document).ready(function () {
+                let nomeUsuario = "";
+                // Função para buscar o nome do usuário logado
+                function buscarNomeUsuario(token) {
+                    $.ajax({
+                        method: 'GET',
+                        url: 'http://192.168.10.80/api/user',
+                        headers: { 'Authorization': 'Bearer ' + token },
+                        success: function (data) {
+                            nomeUsuario = data.name;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
+                        }
+                    });
+                }
+
+                // Buscar o nome do usuário quando a página carregar
+                buscarNomeUsuario(token);
+
+                function enviarComentario() {
+                    const comentario = $("#comment").val();
+                    if (comentario.trim() !== "" && nomeUsuario !== "") {
+                        const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
+                        $("#commentList").append(novoComentario);
+                        $("#comment").val("");
+                        $("#commentList").scrollTop($("#commentList")[0].scrollHeight);
+                    }
+                }
+                $("#send").click(function () {
+                    enviarComentario();
+                });
+
+                $("#comment").keypress(function (event) {
+                    if (event.which === 13) {
+                        event.preventDefault();
+                        enviarComentario();
+                    }
+                });
+
+            });
+        }
     </script>
 </body>
 

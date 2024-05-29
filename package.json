@@ -17,9 +17,12 @@
   },
   "dependencies": {
     "bourbon": "^7.3.0",
+    "electron-localshortcut": "^3.2.1",
     "express": "^4.19.2",
+    "ffi-napi": "^4.0.3",
     "jquery": "^3.7.1",
     "json-server": "^1.0.0-beta.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "ref-napi": "^3.0.3"
   }
 }

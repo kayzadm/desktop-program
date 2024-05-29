@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>PHD Do Brasil</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -24,11 +24,10 @@
         </div>
         <div class="contentArea">
             <div id="mySidebar" class="leftMenu">
-                <button class="navigationBtn moduloBtn user" id="iframeBtn">
-                    
-                </button>
+                <button class="navigationBtn moduloBtn user" id="iframeBtn"></button>
                 <div class="modulo">
-                    <a href="#" class="btn btn-white btn-        animate  moduloBtn2" id="ModuloDrop">cursos</a>
+                    <a href="#" class="btn btn-white btn-animate  moduloBtn2" id="ModuloDrop">cursos</a>
+                    <button id="logout" class="btn btn-white btn-white">Sair</button>
                     <!-- <button class="navigationBtn moduloBtn" id="ModuloDrop">
                         <p>Cursos</p>
                     </button> -->
@@ -51,33 +50,71 @@
     <script>
         const { remote } = require('electron');
         const path = require('path');
+        var tokenLocalStorage = localStorage.getItem('sessionToken');
+        var tokenSessionStorage = sessionStorage.getItem('sessionToken');
+
         $(document).ready(function () {
-            const token = localStorage.getItem('sessionToken');
-            console.log
-            if (!token) {
-                window.location.href = 'login.html';
-            } else {
+
+
+            if (tokenSessionStorage !== null) {
+                var token = sessionStorage.getItem('sessionToken');
+
                 $.ajax({
                     type: 'GET',
                     url: 'http://192.168.10.80/api/user',
                     headers: { 'Authorization': 'Bearer ' + token },
                     success: function (response) {
-                        const btnProfile = `
+                        if (response.active == 0) {
+                            alert('Ops!Sua conta está desativada. Entre em contato conosco para ativar')
+                            window.location.href = 'login.html'
+                            localStorage.removeItem('sessionToken')
+                        } else {
+                            const btnProfile = `
                         <img src="${response.iamge}" alt="">
                         <h4>${response.name}</h4>
                         `
-
-
-                        $('#iframeBtn').append(btnProfile)    
+                            $('#iframeBtn').append(btnProfile)
+                        }
                     },
                     error: function () {
                         window.location.href = 'login.html';
                     }
-                });
+                })
+
             }
+            if (tokenLocalStorage !== null) {
+                var token = localStorage.getItem('sessionToken');
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://192.168.10.80/api/user',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    success: function (response) {
+                        if (response.active == 0) {
+                            alert('Ops!Sua conta está desativada. Entre em contato conosco para ativar')
+                            window.location.href = 'login.html'
+                            localStorage.removeItem('sessionToken')
+                        } else {
+                            const btnProfile = `
+                        <img src="${response.iamge}" alt="">
+                        <h4>${response.name}</h4>
+                        `
+                            $('#iframeBtn').append(btnProfile)
+                        }
+                    },
+                    error: function () {
+                        window.location.href = 'login.html';
+                    }
+                })
+
+            }
+
+
         });
-
-
+        logout.addEventListener('click', () => {
+            localStorage.removeItem('sessionToken');
+            sessionStorage.removeItem('sessionToken');
+            window.location.href = 'login.html';
+        });
     </script>
 </body>
 

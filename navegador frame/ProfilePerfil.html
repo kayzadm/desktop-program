@@ -13,34 +13,54 @@
 <body>
     <div class="ProfileArea none">
         <div class="ProfileAcount">
-            <div class="ProfileImage">
-                <!-- <img src="icons/do-utilizador.png" alt=""> -->
-            </div>
-            <div class="ProfileAdress" id="profileAdress">
+            <div class="ProfileImage" id="ProfileImage"></div>
+            <div class="ProfileAdress" id="profileAdress"></div>
 
-            </div>
         </div>
     </div>
 
     <script>
-        const token = localStorage.getItem('sessionToken');
-        $.ajax({
-            type: 'GET',
-            url: 'http://192.168.10.80/api/user',
-            headers: { 'Authorization': 'Bearer ' + token },
-            success: function (data) {
-                console.log(data)
-                const profileInfo = `<div class="ProfileCampo" id="profileAdress">
+        var tokenLocalStorage = localStorage.getItem('sessionToken');
+        var tokenSessionStorage = sessionStorage.getItem('sessionToken');
+        if (tokenSessionStorage !== null) {
+            var token = sessionStorage.getItem('sessionToken');
+            $.ajax({
+                type: 'GET',
+                url: 'http://192.168.10.80/api/user',
+                headers: { 'Authorization': 'Bearer ' + token },
+                success: function (data) {
+                    const image = `<img src="${data.image}" alt="">`
+                    const profileInfo = `<div class="ProfileCampo" id="profileAdress">
+                    <p>${data.email}</p>
+                    <p>${data.name}</p>
+                </div>`
+                    $('#ProfileImage').append(image)
+                    $('#profileAdress').append(profileInfo)
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro ao fazer a requisição:', status, error);
+                }
+            });
+        }
+        if (tokenLocalStorage !== null) {
+            var token = localStorage.getItem('sessionToken');
+            $.ajax({
+                type: 'GET',
+                url: 'http://192.168.10.80/api/user',
+                headers: { 'Authorization': 'Bearer ' + token },
+                success: function (data) {
+                    const profileInfo = `<div class="ProfileCampo" id="profileAdress">
                     <p>${data.email}</p>
                     <p>${data.name}</p>
                 </div>`
 
-                $('#profileAdress').append(profileInfo)
-            },
-            error: function (xhr, status, error) {
-                console.error('Erro ao fazer a requisição:', status, error);
-            }
-        });
+                    $('#profileAdress').append(profileInfo)
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro ao fazer a requisição:', status, error);
+                }
+            });
+        }
     </script>
 
 </body>

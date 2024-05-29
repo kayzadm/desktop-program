@@ -1,6 +1,4 @@
 const $ = require('jquery');
-
-
 const { ipcRenderer } = require('electron')
 const ipc = ipcRenderer
 const maxResBtn = document.querySelector('maximizeBtn')
@@ -9,6 +7,7 @@ const menu = document.querySelectorAll('.moduloBtn')
 const menuBtn = document.querySelector('.moduloBtn2')
 const iframe = document.getElementById('iframe');
 var isLeftMenuActive = true
+const logout = document.getElementById('logout')
 
 document.querySelector('.closeBtn').addEventListener('click', () => {
     ipc.send('closeApp')
@@ -42,6 +41,7 @@ showHideMenus.addEventListener('click', () => {
         menu.forEach(element => {
             element.style.display = 'none';
         })
+        logout.style.display = 'none'
         menuBtn.style.display = 'none';
         
         mySidebar.style.width = '0px'
@@ -51,8 +51,8 @@ showHideMenus.addEventListener('click', () => {
         menu.forEach(element => {
             element.style.display = 'flex';
         })
-        menuBtn.style.display = 'inline-block';
-        
+        menuBtn.style.display = 'inline-flex';
+        logout.style.display = 'flex'
         mySidebar.style.width = '225px'
         isLeftMenuActive = true
         
@@ -63,7 +63,7 @@ showHideMenus.addEventListener('click', () => {
 
 //iframe
 ModuloDrop.addEventListener('click', () => {
-    iframe.src = 'aulas.html'
+    iframe.src = 'curso.html'
 })
 document.getElementById('iframeBtn').addEventListener('click', () => {
     iframe.src = 'ProfilePerfil.html'

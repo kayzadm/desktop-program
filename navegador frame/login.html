@@ -20,7 +20,6 @@
     <div class="contentArea">
         <div class="login">
             <div class="login-text">
-
                 <span>Seja Bem vindo</span>
                 <span>a Phd do Brasil!</span>
                 <div id="response"></div>
@@ -32,15 +31,13 @@
                     <label for="senha">Senha</label><br>
                     <input type="password" class="login-input" id="password" placeholder="Senha" name="password">
                     <br>
-                    <input type="checkbox" name="check">
+                    <input type="checkbox" id="Checkbox" name="check">
                     <label for="check" class="label-check">Lembre-se de mim</label>
                     <br>
                     <div class="button-form">
                         <button class="loginBtn" id="loginBtn">Login</button>
                     </div>
                 </form>
-
-
             </div>
         </div>
     </div>
@@ -53,7 +50,8 @@
         const ipc = ipcRenderer
         const maxResBtn = document.querySelector('maximizeBtn')
         const login = document.querySelector('.login')
-        var isLeftMenuActive = true
+        var tokenLocalStorage = localStorage.getItem('sessionToken');
+        var tokenSessionStorage = sessionStorage.getItem('sessionToken');
 
         document.querySelector('.closeBtn').addEventListener('click', () => {
             ipc.send('closeApp')
@@ -79,34 +77,29 @@
         ipc.on('isRestored', () => { changeMaxResBtn(false) })
 
         $(document).ready(function () {
-                const token = localStorage.getItem('sessionToken');
-
-                if (!token) {
-                    console.log('ola')
-                } else {
-                    $.ajax({
-                        type: 'GET',
-                        url: 'http://192.168.10.80/api/user',
-                        headers: { 'Authorization': 'Bearer ' + token },
-                        success: function (response) {
-                            window.location.href = 'index.html'
-                        },
-                        error: function () {
-                            // window.location.href = 'login.html';
+            if (tokenLocalStorage !== null) {
+                var token = localStorage.getItem('sessionToken');
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://192.168.10.80/api/user',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    success: function (response) {
+                        if (response.active == 0) {
+                            alert('Ops!Sua conta está desativada. Entre em contato conosco para ativar')
                         }
-                    });
-                }
+                        else {
+                            window.location.href = 'index.html'
+                        }
+                    }
+                });
             }
+        }
         );
 
         $("#form").on('submit', function (e) {
-
-            // nao submeter o form pelo php
             e.preventDefault();
             const email = $('#email').val();
             const password = $('#password').val();
-
-            // ajax
             $.ajax({
                 type: 'POST',
                 url: 'http://192.168.10.80/api/auth',
@@ -124,12 +117,16 @@
                     $("#loginBtn").val('entrar');
                     $("#loginBtn").removeAttr("disabled");
 
-                    if (!response.errors && !response.message) {
+                    if ($('#Checkbox').is(':checked')) {
                         localStorage.setItem('sessionToken', response.token);
+                    }else {
+                        sessionStorage.setItem('sessionToken', response.token)
+                    }
+
+                    if (!response.errors && !response.message) {
                         window.location.replace('index.html');
                     } else {
                         if (typeof response.message === 'string') {
-                            console.log(response.message);
                             $("#response").append('<p class="text-danger">' + response.message + '</p>');
                         } else if (Array.isArray(response.message)) {
                             $.each(response.message, function (i, val) {
@@ -143,7 +140,6 @@
 
                             });
                         }
-
                         setTimeout(function () {
                             $("#response").html('');
                             $("#response").removeClass('alert alert-danger');
@@ -155,27 +151,24 @@
                     $("#loginBtn").val('entrar');
                     $("#loginBtn").removeAttr("disabled");
                 },
-
             });
-
         });
         $("form").submit(function () {
             $(this).find(":submit").attr('disabled', 'disabled');
         });
-        if (window.location.pathname.endsWith('index.html')) {
-            const token = localStorage.getItem('sessionToken');
-            if (!token) {
-                window.location.href = 'login.html';
-            }
-        }
-
-        const logoutButton = document.getElementById('logout');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', () => {
-                localStorage.removeItem('sessionToken');
-                window.location.href = 'login.html';
-            });
-        }
+        // if (window.location.pathname.endsWith('index.html')) {
+        //     const token = localStorage.getItem('sessionToken');
+        //     if (!token) {
+        //         window.location.href = 'login.html';
+        //     }
+        // }
+        // const logoutButton = document.getElementById('logout');
+        // if (logoutButton) {
+        //     logoutButton.addEventListener('click', () => {
+        //         localStorage.removeItem('sessionToken');
+        //         window.location.href = 'login.html';
+        //     });
+        // }
     </script>
 </body>
 

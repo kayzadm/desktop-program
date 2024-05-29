@@ -27,20 +27,19 @@
                     var categoriasContainer = $('#categorias-container');
 
                     response.forEach(function (category, categoryIndex) {
-                        console.log(category);
                         var categoryHtml = `<div class="titleCourse"><h1>${category.name}</h1></div>
                         <div class="slider" id="slider-${categoryIndex}">
                             <div class="buttonArea">
                                 <button id="moveLeft-${categoryIndex}" class="moveLeft"></button> 
                             </div>`;
-                        
+
                         categoryHtml += `<div class="slider-area--Top" id="slider-area-${categoryIndex}">`;
 
                         category.courses.forEach(function (course) {
                             var courseHtml = `
                                 <a href="${course.link}" class="cursosArea-left slide-track">
                                     <img src="${course.img}">
-                                    <h3>${course.title}</h3>
+                                    <h3>${course.name}</h3>
                                     <p>${course.description}</p>
                                     <p>Autor: ${course.author}</p>
                                 </a>`;
@@ -58,10 +57,10 @@
                     // Associa os botões de rolagem aos sliders
                     response.forEach(function (category, categoryIndex) {
                         $('#moveLeft-' + categoryIndex).click(function () {
-                            $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() - 300);
+                            $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() - 350);
                         });
                         $('#moveRight-' + categoryIndex).click(function () {
-                            $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() + 300);
+                            $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() + 350);
                         });
                     });
                 },
