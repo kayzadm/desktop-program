@@ -69,10 +69,18 @@
                             window.location.href = 'login.html'
                             localStorage.removeItem('sessionToken')
                         } else {
-                            const btnProfile = `
-                        <img src="${response.iamge}" alt="">
-                        <h4>${response.name}</h4>
-                        `
+                            if (response.image == null) {
+                                var btnProfile = `
+                            <img src="icons/do-utilizador.png" alt="">
+                            <h4>${response.name}</h4>
+                            `
+                            } else {
+                                var btnProfile = `
+                            <img src="${response.image}" alt="">
+                            <h4>${response.name}</h4>
+                            `
+                            }
+
                             $('#iframeBtn').append(btnProfile)
                         }
                     },
@@ -94,10 +102,17 @@
                             window.location.href = 'login.html'
                             localStorage.removeItem('sessionToken')
                         } else {
-                            const btnProfile = `
-                        <img src="${response.iamge}" alt="">
-                        <h4>${response.name}</h4>
-                        `
+                            if (response.image == null) {
+                                var btnProfile = `
+                            <img src="icons/do-utilizador.png" alt="">
+                            <h4>${response.name}</h4>
+                            `
+                            } else {
+                                var btnProfile = `
+                            <img src="${response.image}" alt="">
+                            <h4>${response.name}</h4>
+                            `
+                            }
                             $('#iframeBtn').append(btnProfile)
                         }
                     },

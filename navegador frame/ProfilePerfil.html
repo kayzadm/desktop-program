@@ -29,7 +29,14 @@
                 url: 'http://192.168.10.80/api/user',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function (data) {
-                    const image = `<img src="${data.image}" alt="">`
+                    
+                    if (data.image = null) {
+                        var image = `<img src="images/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg" alt="">`
+
+                    }else {
+                        var image = `<img src="${data.image}" alt="">`
+                    }
+                    
                     const profileInfo = `<div class="ProfileCampo" id="profileAdress">
                     <p>${data.email}</p>
                     <p>${data.name}</p>
@@ -49,11 +56,17 @@
                 url: 'http://192.168.10.80/api/user',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function (data) {
+                   if (data.image == null) {
+                        var image = `<img src="icons/do-utilizador.png" alt="">`
+
+                    }else {
+                        var image = `<img src="${data.image}" alt="">`
+                    }
                     const profileInfo = `<div class="ProfileCampo" id="profileAdress">
                     <p>${data.email}</p>
                     <p>${data.name}</p>
                 </div>`
-
+                    $('#ProfileImage').append(image)
                     $('#profileAdress').append(profileInfo)
                 },
                 error: function (xhr, status, error) {
