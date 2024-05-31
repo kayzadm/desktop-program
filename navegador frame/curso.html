@@ -90,6 +90,7 @@
                     var categoriasContainer = $('#categorias-container');
 
                     response.forEach(function (category, categoryIndex) {
+                        console.log(category)
                         var categoryHtml = `<div class="titleCourse"><h1>${category.name}</h1></div>
                         <div class="slider" id="slider-${categoryIndex}">
                             <div class="buttonArea">
@@ -98,16 +99,16 @@
 
                         categoryHtml += `<div class="slider-area--Top" id="slider-area-${categoryIndex}">`;
 
-                        // category.courses.forEach(function (course) {
-                        //     var courseHtml = `
-                        //         <a href="${course.link}" class="cursosArea-left slide-track">
-                        //             <img src="${course.img}">
-                        //             <h3>${course.name}</h3>
-                        //             <p>${course.description}</p>
-                        //             <p>Autor: ${course.author}</p>
-                        //         </a>`;
-                        //     categoryHtml += courseHtml;
-                        // });
+                        category.courses.forEach(function (course) {
+                            var courseHtml = `
+                                <a href="${course.link}" class="cursosArea-left slide-track">
+                                    <img src="${course.img}">
+                                    <h3>${course.name}</h3>
+                                    <p>${course.description}</p>
+                                    <p>Autor: ${course.author}</p>
+                                </a>`;
+                            categoryHtml += courseHtml;
+                        });
 
                         categoryHtml += `</div>
                             <div class="buttonArea">
