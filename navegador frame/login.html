@@ -119,7 +119,7 @@
 
                     if ($('#Checkbox').is(':checked')) {
                         localStorage.setItem('sessionToken', response.token);
-                    }else {
+                    } else {
                         sessionStorage.setItem('sessionToken', response.token)
                     }
 
@@ -156,19 +156,6 @@
         $("form").submit(function () {
             $(this).find(":submit").attr('disabled', 'disabled');
         });
-        // if (window.location.pathname.endsWith('index.html')) {
-        //     const token = localStorage.getItem('sessionToken');
-        //     if (!token) {
-        //         window.location.href = 'login.html';
-        //     }
-        // }
-        // const logoutButton = document.getElementById('logout');
-        // if (logoutButton) {
-        //     logoutButton.addEventListener('click', () => {
-        //         localStorage.removeItem('sessionToken');
-        //         window.location.href = 'login.html';
-        //     });
-        // }
     </script>
 </body>
 
