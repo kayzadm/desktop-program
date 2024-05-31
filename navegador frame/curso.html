@@ -18,12 +18,75 @@
     <script src="js/curso.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
+        var tokenLocalStorage = localStorage.getItem('sessionToken');
+        var tokenSessionStorage = sessionStorage.getItem('sessionToken');
         $(document).ready(function () {
+            if (tokenLocalStorage !== null) {
+                var token = localStorage.getItem('sessionToken');
+
+                $.ajax({
+                    url: 'http://192.168.10.80/api/categories', // Substitua pela URL do seu endpoint
+                    method: 'GET',
+                    dataType: 'json',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    success: function (response) {
+                        console.log(response)
+                        var categoriasContainer = $('#categorias-container');
+
+                        response.forEach(function (category, categoryIndex) {
+                            var categoryHtml = `<div class="titleCourse"><h1>${category.name}</h1></div>
+                        <div class="slider" id="slider-${categoryIndex}">
+                            <div class="buttonArea">
+                                <button id="moveLeft-${categoryIndex}" class="moveLeft"></button> 
+                            </div>`;
+
+                            categoryHtml += `<div class="slider-area--Top" id="slider-area-${categoryIndex}">`;
+
+                            category.courses.forEach(function (course) {
+                                var courseHtml = `
+                                <a href="${course.link}" class="cursosArea-left slide-track">
+                                    <img src="${course.img}">
+                                    <h3>${course.name}</h3>
+                                    <p>${course.description}</p>
+                                    <p>Autor: ${course.author}</p>
+                                </a>`;
+                                categoryHtml += courseHtml;
+                            });
+
+                            categoryHtml += `</div>
+                            <div class="buttonArea">
+                                <button id="moveRight-${categoryIndex}" class="moveRight"></button>
+                            </div>
+                        </div>`;
+                            categoriasContainer.append(categoryHtml);
+                        });
+
+                        // Associa os botões de rolagem aos sliders
+                        response.forEach(function (category, categoryIndex) {
+                            $('#moveLeft-' + categoryIndex).click(function () {
+                                $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() - 350);
+                            });
+                            $('#moveRight-' + categoryIndex).click(function () {
+                                $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() + 350);
+                            });
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Erro ao obter os dados: ', error);
+                    }
+                });
+            }
+
+        })
+        if (tokenSessionStorage !== null) {
+            var token = sessionStorage.getItem('sessionToken');
             $.ajax({
-                url: 'http://localhost:3000/categories', // Substitua pela URL do seu endpoint
+                url: 'http://192.168.10.80/api/categories', // Substitua pela URL do seu endpoint
                 method: 'GET',
                 dataType: 'json',
+                headers: { 'Authorization': 'Bearer ' + token },
                 success: function (response) {
+                    console.log(response)
                     var categoriasContainer = $('#categorias-container');
 
                     response.forEach(function (category, categoryIndex) {
@@ -35,16 +98,16 @@
 
                         categoryHtml += `<div class="slider-area--Top" id="slider-area-${categoryIndex}">`;
 
-                        category.courses.forEach(function (course) {
-                            var courseHtml = `
-                                <a href="${course.link}" class="cursosArea-left slide-track">
-                                    <img src="${course.img}">
-                                    <h3>${course.name}</h3>
-                                    <p>${course.description}</p>
-                                    <p>Autor: ${course.author}</p>
-                                </a>`;
-                            categoryHtml += courseHtml;
-                        });
+                        // category.courses.forEach(function (course) {
+                        //     var courseHtml = `
+                        //         <a href="${course.link}" class="cursosArea-left slide-track">
+                        //             <img src="${course.img}">
+                        //             <h3>${course.name}</h3>
+                        //             <p>${course.description}</p>
+                        //             <p>Autor: ${course.author}</p>
+                        //         </a>`;
+                        //     categoryHtml += courseHtml;
+                        // });
 
                         categoryHtml += `</div>
                             <div class="buttonArea">
@@ -68,7 +131,9 @@
                     console.error('Erro ao obter os dados: ', error);
                 }
             });
-        });
+        }
+
+
     </script>
 </body>
 

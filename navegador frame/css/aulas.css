@@ -209,6 +209,7 @@ header h1 {
     height: 40px;
 }
 #comment {
+    color: rgb(0, 53, 59);
     border: none;
     font-size: 18px;
     color: #fff;
