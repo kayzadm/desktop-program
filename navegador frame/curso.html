@@ -17,51 +17,90 @@
     </div>
     <script src="js/curso.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../global.js"></script>
     <script type="text/javascript">
+
         var tokenLocalStorage = localStorage.getItem('sessionToken');
         var tokenSessionStorage = sessionStorage.getItem('sessionToken');
+        console.log(apiUrl);
         $(document).ready(function () {
+            
             if (tokenLocalStorage !== null) {
                 var token = localStorage.getItem('sessionToken');
-
+                
                 $.ajax({
-                    url: 'http://192.168.10.80/api/categories', // Substitua pela URL do seu endpoint
+                    url: `${apiUrl}/categories`, // Substitua pela URL do seu endpoint
                     method: 'GET',
                     dataType: 'json',
                     headers: { 'Authorization': 'Bearer ' + token },
                     success: function (response) {
-                        console.log(response)
                         var categoriasContainer = $('#categorias-container');
 
                         response.forEach(function (category, categoryIndex) {
                             var categoryHtml = `<div class="titleCourse"><h1>${category.name}</h1></div>
-                        <div class="slider" id="slider-${categoryIndex}">
-                            <div class="buttonArea">
-                                <button id="moveLeft-${categoryIndex}" class="moveLeft"></button> 
-                            </div>`;
+                <div class="slider" id="slider-${categoryIndex}">
+                    <div class="buttonArea">
+                        <button id="moveLeft-${categoryIndex}" class="moveLeft"></button> 
+                    </div>`;
 
                             categoryHtml += `<div class="slider-area--Top" id="slider-area-${categoryIndex}">`;
 
+
+
                             category.courses.forEach(function (course) {
+                                function limitDescription(description, limit) {
+                                    if (description.length > limit) {
+                                        return description.substring(0, limit) + '...';
+                                    }
+                                    return description;
+                                }
+
+                                var limitedDescription = limitDescription(course.description, 30)
+
+                                const encodedDescription = encodeURIComponent(course.description);
                                 var courseHtml = `
-                                <a href="${course.link}" class="cursosArea-left slide-track">
-                                    <img src="${course.img}">
-                                    <h3>${course.name}</h3>
-                                    <p>${course.description}</p>
-                                    <p>Autor: ${course.author}</p>
-                                </a>`;
+                        <a href="aulas.html?course_id=${course.id}&course_description=${encodedDescription}" class="cursosArea-left slide-track" id="course-${course.id}">
+                        <div class="textSlider">
+                        <img src="">
+                        <h3>${course.name}</h3>
+                        <p>${limitedDescription}</p>
+                        <p>Autor: ${course.author}</p>
+                    </div>
+                    </a>`;
                                 categoryHtml += courseHtml;
+
+                                // Fetch the image for each course
+                                $.ajax({
+                                    url: `${apiUrl}/courses/img/${course.id}`,
+                                    method: 'GET',
+                                    xhrFields: {
+                                        responseType: 'blob' // Tratar a resposta como um blob
+                                    },
+                                    headers: { 'Authorization': 'Bearer ' + token },
+                                    success: function (imageBlob) {
+                                        var imageUrl = URL.createObjectURL(imageBlob);
+                                        if (imageBlob == null) {
+                                            $(`#course-${course.id} img`).attr('src', 'https://phddobrasil.com.br/wp-content/uploads/2024/05/Grupo-de-rolagem-2.jpg')
+                                        } else {
+                                            $(`#course-${course.id} img`).attr('src', imageUrl)
+                                        }
+                                        ;
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Erro ao obter a imagem: ', error);
+                                    }
+                                });
                             });
 
                             categoryHtml += `</div>
-                            <div class="buttonArea">
-                                <button id="moveRight-${categoryIndex}" class="moveRight"></button>
-                            </div>
-                        </div>`;
+                    <div class="buttonArea">
+                        <button id="moveRight-${categoryIndex}" class="moveRight"></button>
+                    </div>
+                </div>`;
                             categoriasContainer.append(categoryHtml);
                         });
 
-                        // Associa os botões de rolagem aos sliders
+
                         response.forEach(function (category, categoryIndex) {
                             $('#moveLeft-' + categoryIndex).click(function () {
                                 $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() - 350);
@@ -74,51 +113,67 @@
                     error: function (xhr, status, error) {
                         console.error('Erro ao obter os dados: ', error);
                     }
-                });
+                })
             }
 
         })
         if (tokenSessionStorage !== null) {
             var token = sessionStorage.getItem('sessionToken');
             $.ajax({
-                url: 'http://192.168.10.80/api/categories', // Substitua pela URL do seu endpoint
+                url: `${apiUrl}/categories`, // Substitua pela URL do seu endpoint
                 method: 'GET',
                 dataType: 'json',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function (response) {
-                    console.log(response)
                     var categoriasContainer = $('#categorias-container');
 
                     response.forEach(function (category, categoryIndex) {
-                        console.log(category)
                         var categoryHtml = `<div class="titleCourse"><h1>${category.name}</h1></div>
-                        <div class="slider" id="slider-${categoryIndex}">
-                            <div class="buttonArea">
-                                <button id="moveLeft-${categoryIndex}" class="moveLeft"></button> 
-                            </div>`;
+                <div class="slider" id="slider-${categoryIndex}">
+                    <div class="buttonArea">
+                        <button id="moveLeft-${categoryIndex}" class="moveLeft"></button> 
+                    </div>`;
 
                         categoryHtml += `<div class="slider-area--Top" id="slider-area-${categoryIndex}">`;
 
                         category.courses.forEach(function (course) {
+                            // Placeholder for course HTML until the image is fetched
                             var courseHtml = `
-                                <a href="${course.link}" class="cursosArea-left slide-track">
-                                    <img src="${course.img}">
-                                    <h3>${course.name}</h3>
-                                    <p>${course.description}</p>
-                                    <p>Autor: ${course.author}</p>
-                                </a>`;
+                    <a href="aulas.html?course_id=${course.id}" class="cursosArea-left slide-track" id="course-${course.id}">
+                        <img src="">
+                        <h3>${course.name}</h3>
+                        <p>${course.description}</p>
+                        <p>Autor: ${course.author}</p>
+                    </a>`;
                             categoryHtml += courseHtml;
+
+                            // Fetch the image for each course
+                            $.ajax({
+                                url: `${apiUrl}/courses/img/${course.id}`,
+                                method: 'GET',
+                                xhrFields: {
+                                    responseType: 'blob' // Tratar a resposta como um blob
+                                },
+                                headers: { 'Authorization': 'Bearer ' + token },
+                                success: function (imageBlob) {
+                                    var imageUrl = URL.createObjectURL(imageBlob);
+                                    $(`#course-${course.id} img`).attr('src', imageUrl);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Erro ao obter a imagem: ', error);
+                                }
+                            });
                         });
 
                         categoryHtml += `</div>
-                            <div class="buttonArea">
-                                <button id="moveRight-${categoryIndex}" class="moveRight"></button>
-                            </div>
-                        </div>`;
+                    <div class="buttonArea">
+                        <button id="moveRight-${categoryIndex}" class="moveRight"></button>
+                    </div>
+                </div>`;
                         categoriasContainer.append(categoryHtml);
                     });
 
-                    // Associa os botões de rolagem aos sliders
+
                     response.forEach(function (category, categoryIndex) {
                         $('#moveLeft-' + categoryIndex).click(function () {
                             $('#slider-area-' + categoryIndex).scrollLeft($('#slider-area-' + categoryIndex).scrollLeft() - 350);
@@ -131,7 +186,8 @@
                 error: function (xhr, status, error) {
                     console.error('Erro ao obter os dados: ', error);
                 }
-            });
+            })
+
         }
 
 

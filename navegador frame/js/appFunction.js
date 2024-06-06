@@ -1,11 +1,20 @@
 const $ = require('jquery');
 const { ipcRenderer } = require('electron')
 const ipc = ipcRenderer
+
+
+ipcRenderer.on('env-variables', (event, envVariables) => {
+    // Passe as variáveis de ambiente para o iframe
+    const iframe = document.getElementById('iframe');
+    iframe.contentWindow.postMessage(envVariables, '*'); // '*' permite qualquer origem
+});
+
+// Solicita as variáveis de ambiente do processo principal
+ipcRenderer.send('get-env-variables');
 const maxResBtn = document.querySelector('maximizeBtn')
 const mySidebar = document.getElementById('mySidebar')
 const menu = document.querySelectorAll('.moduloBtn')
 const menuBtn = document.querySelector('.moduloBtn2')
-const iframe = document.getElementById('iframe');
 var isLeftMenuActive = true
 const logout = document.getElementById('logout')
 
@@ -48,12 +57,13 @@ showHideMenus.addEventListener('click', () => {
         isLeftMenuActive = false
         
     } else {
+        mySidebar.style.width = '225px'
         menu.forEach(element => {
             element.style.display = 'flex';
         })
         menuBtn.style.display = 'inline-flex';
         logout.style.display = 'flex'
-        mySidebar.style.width = '225px'
+        
         isLeftMenuActive = true
         
     }
@@ -62,9 +72,30 @@ showHideMenus.addEventListener('click', () => {
 
 
 //iframe
+function enviarVariaveisParaIframe() {
+    // Solicita as variáveis de ambiente do processo principal
+    ipcRenderer.on('env-variables', (event, envVariables) => {
+        // Passe as variáveis de ambiente para o iframe
+        const iframe = document.getElementById('iframe');
+        iframe.contentWindow.postMessage({ envVariables }, '*'); // '*' permite qualquer origem
+    });
+
+    // Solicita as variáveis de ambiente do processo principal
+    ipcRenderer.send('get-env-variables');
+}
+
+// Evento de clique no ModuloDrop
 ModuloDrop.addEventListener('click', () => {
-    iframe.src = 'curso.html'
-})
+    const iframe = document.getElementById('iframe');
+
+    // Troca o src do iframe para 'curso.html'
+    iframe.src = 'curso.html';
+
+    // Aguarde o carregamento completo do iframe antes de enviar as variáveis de ambiente
+    iframe.addEventListener('load', () => {
+        enviarVariaveisParaIframe();
+    });
+});
 document.getElementById('iframeBtn').addEventListener('click', () => {
     iframe.src = 'ProfilePerfil.html'
 })

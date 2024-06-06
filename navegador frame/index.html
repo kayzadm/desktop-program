@@ -48,17 +48,16 @@
     </main>
     <script src="js/appFunction.js"></script>
     <script>
+        require('dotenv').config();
+        window.apiUrl = 'http://192.168.10.80/api';
         const { remote } = require('electron');
         const path = require('path');
         var tokenLocalStorage = localStorage.getItem('sessionToken');
         var tokenSessionStorage = sessionStorage.getItem('sessionToken');
 
         $(document).ready(function () {
-
-
             if (tokenSessionStorage !== null) {
                 var token = sessionStorage.getItem('sessionToken');
-
                 $.ajax({
                     type: 'GET',
                     url: 'http://192.168.10.80/api/user',
@@ -67,7 +66,7 @@
                         if (response.active == 0) {
                             alert('Ops!Sua conta está desativada. Entre em contato conosco para ativar')
                             window.location.href = 'login.html'
-                            localStorage.removeItem('sessionToken')
+                            sessionStorage.removeItem('sessionToken')
                         } else {
                             if (response.image == null) {
                                 var btnProfile = `
@@ -87,10 +86,10 @@
                     error: function () {
                         window.location.href = 'login.html';
                     }
+
                 })
 
-            }
-            if (tokenLocalStorage !== null) {
+            } else if (tokenLocalStorage !== null) {
                 var token = localStorage.getItem('sessionToken');
                 $.ajax({
                     type: 'GET',
@@ -121,9 +120,9 @@
                     }
                 })
 
+            } else {
+                window.location.href = 'login.html';
             }
-
-
         });
         logout.addEventListener('click', () => {
             localStorage.removeItem('sessionToken');

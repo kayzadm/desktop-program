@@ -5,167 +5,289 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/aulas.css">
-    <title>Document</title>
-
+    <title>Aulas</title>
 </head>
 
 <body>
-
     <div class="content" id="content">
         <div class="videoArea">
-            <video src="" id="videoPlayer" controls controls controlsList="nodownload"></video>
+            <video src="" id="videoPlayer" controls controlsList="nodownload"></video>
             <header id="header">
-                <h1 id="tituloAula">Seja Bem Vindo!</h1>
+                <h1 id="tituloAula"></h1>
             </header>
-            <!-- <div class="comment">
-                <h1>em caso de duvidas deixe um comentario</h1>
-                <div class="commentList-Area">
-                    <div class="commentList" id="commentList"></div>
-                </div>
-                <div class="commentInput">
-                    <textarea id="comment" placeholder="Comentários" keypress></textarea>
-                    <button id="send"><img src="icons/send_icon_232367.png" alt=""></button>
-                </div>
-            </div> -->
         </div>
 
         <div class="modulos" id="modulos">
             <div class="titleModulos">
                 <h1>Aulas</h1>
             </div>
-            <!-- <a href="#" class="btn btn-white btn-animate  moduloBtn2" id="ModuloDrop">cursos</a> -->
         </div>
-
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/aulas.js"></script>
+    <script src="../global.js"></script>
     <script>
         var tokenLocalStorage = localStorage.getItem('sessionToken');
         var tokenSessionStorage = sessionStorage.getItem('sessionToken');
-        // const $ = require('jquery');
-        $(document).ready(function () {
-            $.ajax({
-                url: 'http://localhost:3000/aulas',
-                method: 'GET',
-                dataType: 'json',
-                success: function (response) {
-                    var content = $('#modulos');
-
-                    response.forEach(function (aulas) {
-
-                        var categoryHtml = `
-                        <button class="btn btn-white btn-animate  aula-btn" data-video="${aulas.link}" data-title="${aulas.title}" data-id="${aulas.id}">${aulas.id}: ${aulas.title}</button>
-                        
-                        `;// <button class="aula-btn" data-video="${aulas.link}" data-title="${aulas.title}">${aulas.title}</button>
-
-                        content.append(categoryHtml);
-                    });
-                    content.on('click', '.aula-btn', function () {
-                        var link = $(this).data('video');
-                        var title = $(this).data('title');
-                        var id = $(this).data('id')
-                        var videoPlayer = $('#videoPlayer');
-                        var tituloAula = $('#tituloAula');
-                        videoPlayer.attr('src', link);
-                        videoPlayer[0].load();
-                        tituloAula.text(`${id}: ${title}`);
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error('Erro ao obter os dados: ', error);
-                }
-            });
-        });
-
-        if (tokenLocalStorage !== null) {
-            var token = localStorage.getItem('sessionToken');
-            $(document).ready(function () {
-                let nomeUsuario = "";
-                // Função para buscar o nome do usuário logado
-                function buscarNomeUsuario(token) {
-                    $.ajax({
-                        method: 'GET',
-                        url: 'http://192.168.10.80/api/user',
-                        headers: { 'Authorization': 'Bearer ' + token },
-                        success: function (data) {
-                            nomeUsuario = data.name;
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
-                        }
-                    });
-                }
-
-                // Buscar o nome do usuário quando a página carregar
-                buscarNomeUsuario(token);
-
-                function enviarComentario() {
-                    const comentario = $("#comment").val();
-                    if (comentario.trim() !== "" && nomeUsuario !== "") {
-                        const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
-                        $("#commentList").append(novoComentario);
-                        $("#comment").val("");
-                        $("#commentList").scrollTop($("#commentList")[0].scrollHeight);
-                    }
-                }
-                $("#send").click(function () {
-                    enviarComentario();
-                });
-
-                $("#comment").keypress(function (event) {
-                    if (event.which === 13) {
-                        event.preventDefault();
-                        enviarComentario();
-                    }
-                });
-
-            });
-        }
         if (tokenSessionStorage !== null) {
             var token = sessionStorage.getItem('sessionToken');
             $(document).ready(function () {
-                let nomeUsuario = "";
-                // Função para buscar o nome do usuário logado
-                function buscarNomeUsuario(token) {
-                    $.ajax({
-                        method: 'GET',
-                        url: 'http://192.168.10.80/api/user',
-                        headers: { 'Authorization': 'Bearer ' + token },
-                        success: function (data) {
-                            nomeUsuario = data.name;
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
-                        }
-                    });
+                function getCourseIdFromUrl() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get('course_id');
                 }
 
-                // Buscar o nome do usuário quando a página carregar
-                buscarNomeUsuario(token);
+                const courseId = getCourseIdFromUrl();
+                const token = localStorage.getItem('sessionToken') || sessionStorage.getItem('sessionToken');
 
-                function enviarComentario() {
-                    const comentario = $("#comment").val();
-                    if (comentario.trim() !== "" && nomeUsuario !== "") {
-                        const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
-                        $("#commentList").append(novoComentario);
-                        $("#comment").val("");
-                        $("#commentList").scrollTop($("#commentList")[0].scrollHeight);
-                    }
+                if (!token) {
+                    window.location.href = "login.html";
+                    return;
                 }
-                $("#send").click(function () {
-                    enviarComentario();
-                });
 
-                $("#comment").keypress(function (event) {
-                    if (event.which === 13) {
-                        event.preventDefault();
-                        enviarComentario();
+                $.ajax({
+                    url: `${apiUrl}lessons`, // Ajuste a URL para seu endpoint correto
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    dataType: 'json',
+                    success: function (response) {
+                        // (response)
+                        var content = $('#modulos');
+                        response.lessons.forEach(function (aula) {
+                            var lessonsId = aula.course_id;
+                            if (lessonsId == courseId) {
+
+
+                                var aulaHtml = `
+                    <button class="btn btn-white btn-animate aula-btn" data-information="${aula.information}" id="aula-${aula.id}" data-title="${aula.name}" data-sequence="${aula.sequence}">
+                        ${aula.sequence}: ${aula.name}
+                    </button>`;
+                                content.append(aulaHtml);
+
+                                $.ajax({
+                                    url: `${apiUrl}lessons/midia/${aula.id}`,
+                                    method: 'GET',
+                                    headers: { 'Authorization': 'Bearer ' + token },
+                                    success: function (videoResponse) {
+                                        (videoResponse.midia)
+                                        var midia = videoResponse.midia
+                                        // var videoUrl = URL.createObjectURL(videoResponse);
+                                        $(`#aula-${aula.id}`).attr('data-video', midia);
+                                        if (aula.sequence == 1) {
+                                            $('#videoPlayer').attr('src', midia);
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error('Erro ao obter o vídeo: ', error);
+                                    }
+                                });
+                                if (aula.sequence == 1) {
+                                    $('#tituloAula').text(`${aula.sequence}: ${aula.information}`)
+                                }
+                            }
+                        });
+
+
+                        $(document).on('click', '.aula-btn', function () {
+                            var sequence = $(this).data('sequence')
+                            var midia = $(this).data('video');
+                            var videoInformation = $(this).data('information');
+                            var videoPlayer = $('#videoPlayer');
+                            var tituloAula = $('#tituloAula');
+                            videoPlayer.attr('src', midia);
+                            videoPlayer[0].load();
+                            tituloAula.text(`${sequence}: ${videoInformation}`)
+
+                        });
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Erro ao obter as aulas: ', error);
                     }
                 });
+                // function buscarNomeUsuario() {
+                //     $.ajax({
+                //         method: 'GET',
+                //         url: '${apiUrl}user', // Ajuste a URL para seu endpoint correto
+                //         headers: { 'Authorization': 'Bearer ' + token },
+                //         success: function (data) {
+                //             nomeUsuario = data.name;
+                //         },
+                //         error: function (jqXHR, textStatus, errorThrown) {
+                //             console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
+                //         }
+                //     });
+                // }
 
+                // if (token) {
+                //     let nomeUsuario = "";
+                //     buscarNomeUsuario();
+
+                //     function enviarComentario() {
+                //         const comentario = $("#comment").val();
+                //         if (comentario.trim() !== "" && nomeUsuario !== "") {
+                //             const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
+                //             $("#commentList").append(novoComentario);
+                //             $("#comment").val("");
+                //             $("#commentList").scrollTop($("#commentList")[0].scrollHeight);
+                //         }
+                //     }
+
+                //     $("#send").click(function () {
+                //         enviarComentario();
+                //     });
+
+                //     $("#comment").keypress(function (event) {
+                //         if (event.which === 13) {
+                //             event.preventDefault();
+                //             enviarComentario();
+                //         }
+                //     });
+                // }
             });
         }
+
+        $(document).ready(function () {
+            if (tokenLocalStorage !== null) {
+                var token = localStorage.getItem('sessionToken');
+                $(document).ready(function () {
+                    console.log(apiUrl)
+                    function getQueryParams() {
+                        const params = new URLSearchParams(window.location.search);
+                        const courseId = params.get('course_id');
+                        const courseDescription = params.get('course_description');
+                        return { courseId, courseDescription };
+                    }
+
+                    // Obtém os parâmetros da URL
+                    const { courseId, courseDescription } = getQueryParams();
+
+                    // Decodifica a descrição do curso
+                    const decodedDescription = decodeURIComponent(courseDescription);
+
+                    // Exibe os parâmetros no console (ou use-os conforme necessário)
+                    console.log('Course ID:', courseId);
+                    console.log('Course Description:', decodedDescription);
+                    const token = localStorage.getItem('sessionToken') || sessionStorage.getItem('sessionToken');
+
+                    if (!token) {
+                        window.location.href = "login.html";
+                        return;
+                    }
+
+                    $.ajax({
+                        url: `${apiUrl}/lessons`, // Ajuste a URL para seu endpoint correto
+                        method: 'GET',
+                        headers: { 'Authorization': 'Bearer ' + token },
+                        dataType: 'json',
+                        success: function (response) {
+                            // (response)
+                            var content = $('#modulos');
+                            var lessons = response.lessons;
+
+                            // Ordenar as aulas com base no campo 'sequence'
+                            lessons.sort((a, b) => a.sequence - b.sequence);
+
+                            lessons.forEach(function (aula) {
+                                var lessonsId = aula.course_id;
+                                if (lessonsId == courseId) {
+                                    var aulaHtml = `
+                    <button class="btn btn-white btn-animate aula-btn" data-information="${aula.information}" id="aula-${aula.id}" data-title="${aula.name}" data-sequence="${aula.sequence}">
+                        ${aula.sequence}: ${aula.name}
+                    </button>`;
+                                    content.append(aulaHtml);
+                                    const sequence = aula.sequence
+                                    $.ajax({
+                                        url: `${apiUrl}/lessons/midia/${aula.id}`,
+                                        method: 'GET',
+                                        headers: { 'Authorization': 'Bearer ' + token },
+                                        success: function (videoResponse) {
+                                            (videoResponse.midia)
+                                            var midia = videoResponse.midia
+                                            // var videoUrl = URL.createObjectURL(videoResponse);
+                                            $(`#aula-${aula.id}`).attr('data-video', midia);
+                                            if (aula.sequence == 1) {
+                                                $('#videoPlayer').attr('src', midia);
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Erro ao obter o vídeo: ', error);
+                                        }
+                                    });
+
+                                    if (sequence == 1) {
+                                        $('#tituloAula').text(`Descrição do Curso: ${courseDescription}`)
+                                    }
+                                }
+
+
+                            });
+
+
+
+                            $(document).on('click', '.aula-btn', function () {
+                                var sequence = $(this).data('sequence')
+                                var midia = $(this).data('video');
+                                var videoInformation = $(this).data('information');
+                                var videoPlayer = $('#videoPlayer');
+                                var tituloAula = $('#tituloAula');
+                                videoPlayer.attr('src', midia);
+                                videoPlayer[0].load();
+                                tituloAula.text(`Descrição: ${videoInformation}`)
+
+                            });
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Erro ao obter as aulas: ', error);
+                        }
+                    });
+
+
+                    // function buscarNomeUsuario() {
+                    //     $.ajax({
+                    //         method: 'GET',
+                    //         url: '${apiUrl}user', // Ajuste a URL para seu endpoint correto
+                    //         headers: { 'Authorization': 'Bearer ' + token },
+                    //         success: function (data) {
+                    //             nomeUsuario = data.name;
+                    //         },
+                    //         error: function (jqXHR, textStatus, errorThrown) {
+                    //             console.error('Erro ao buscar o nome do usuário:', textStatus, errorThrown);
+                    //         }
+                    //     });
+                    // }
+
+                    // if (token) {
+                    //     let nomeUsuario = "";
+                    //     buscarNomeUsuario();
+
+                    //     function enviarComentario() {
+                    //         const comentario = $("#comment").val();
+                    //         if (comentario.trim() !== "" && nomeUsuario !== "") {
+                    //             const novoComentario = $("<p></p>").html(`<strong>${nomeUsuario}:</strong> ${comentario}`);
+                    //             $("#commentList").append(novoComentario);
+                    //             $("#comment").val("");
+                    //             $("#commentList").scrollTop($("#commentList")[0].scrollHeight);
+                    //         }
+                    //     }
+
+                    //     $("#send").click(function () {
+                    //         enviarComentario();
+                    //     });
+
+                    //     $("#comment").keypress(function (event) {
+                    //         if (event.which === 13) {
+                    //             event.preventDefault();
+                    //             enviarComentario();
+                    //         }
+                    //     });
+                    // }
+                });
+            }
+        })
+
     </script>
 </body>
 
