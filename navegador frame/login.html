@@ -41,6 +41,7 @@
             </div>
         </div>
     </div>
+    <script src="../global.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const $ = require('jquery');
@@ -81,7 +82,7 @@
                 var token = localStorage.getItem('sessionToken');
                 $.ajax({
                     type: 'GET',
-                    url: 'http://192.168.10.80/api/user',
+                    url: `${apiUrl}/user`,
                     headers: { 'Authorization': 'Bearer ' + token },
                     success: function (response) {
                         if (response.active == 0) {
@@ -102,7 +103,7 @@
             const password = $('#password').val();
             $.ajax({
                 type: 'POST',
-                url: 'http://192.168.10.80/api/auth',
+                url: `${apiUrl}/auth`,
                 data: new FormData(this),
                 dataType: 'json',
                 contentType: false,

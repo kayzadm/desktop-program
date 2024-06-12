@@ -22,12 +22,11 @@
 
         var tokenLocalStorage = localStorage.getItem('sessionToken');
         var tokenSessionStorage = sessionStorage.getItem('sessionToken');
-        console.log(apiUrl);
         $(document).ready(function () {
-            
+
             if (tokenLocalStorage !== null) {
                 var token = localStorage.getItem('sessionToken');
-                
+
                 $.ajax({
                     url: `${apiUrl}/categories`, // Substitua pela URL do seu endpoint
                     method: 'GET',
@@ -68,8 +67,8 @@
                     </div>
                     </a>`;
                                 categoryHtml += courseHtml;
+                                console.log(course.image)
 
-                                // Fetch the image for each course
                                 $.ajax({
                                     url: `${apiUrl}/courses/img/${course.id}`,
                                     method: 'GET',
@@ -87,7 +86,7 @@
                                         ;
                                     },
                                     error: function (xhr, status, error) {
-                                        console.error('Erro ao obter a imagem: ', error);
+                                        $(`#course-${course.id} img`).attr('src', 'images/Grupo-de-rolagem-2.jpg')
                                     }
                                 });
                             });
@@ -189,8 +188,6 @@
             })
 
         }
-
-
     </script>
 </body>
 
