@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "backend": "json-server --watch db/db.json",
-    "aulas": "json-server --watch db/aulas.json",
-    "profile": "json-server --watch db/profile.json"
+    "start": "electron ."
   },
   "keywords": [],
   "author": "",
