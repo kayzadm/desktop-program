@@ -11,7 +11,7 @@
 <body>
     <div class="content" id="content">
         <div class="videoArea">
-            <video src="" id="videoPlayer" controls controlsList="nodownload"></video>
+            <video src="" id="videoPlayer" controls disablePictureInPicture controlsList="nodownload"></video>
             <header id="header">
                 <h1 id="tituloAula"></h1>
             </header>
@@ -33,79 +33,90 @@
         if (tokenSessionStorage !== null) {
             var token = sessionStorage.getItem('sessionToken');
             $(document).ready(function () {
-                function getCourseIdFromUrl() {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    return urlParams.get('course_id');
-                }
+                    function getQueryParams() {
+                        const params = new URLSearchParams(window.location.search);
+                        const courseId = params.get('course_id');
+                        const courseDescription = params.get('course_description');
+                        return { courseId, courseDescription };
+                    }
+                    const { courseId, courseDescription } = getQueryParams();
+                    const decodedDescription = decodeURIComponent(courseDescription);
+                    const token = localStorage.getItem('sessionToken') || sessionStorage.getItem('sessionToken');
 
-                const courseId = getCourseIdFromUrl();
-                const token = localStorage.getItem('sessionToken') || sessionStorage.getItem('sessionToken');
+                    if (!token) {
+                        window.location.href = "login.html";
+                        return;
+                    }
 
-                if (!token) {
-                    window.location.href = "login.html";
-                    return;
-                }
+                    $.ajax({
+                        url: `${apiUrl}/lessons`, // Ajuste a URL para seu endpoint correto
+                        method: 'GET',
+                        headers: { 'Authorization': 'Bearer ' + token },
+                        dataType: 'json',
+                        success: function (response) {
+                            // (response)
+                            var content = $('#modulos');
+                            var lessons = response.lessons;
 
-                $.ajax({
-                    url: `${apiUrl}lessons`, // Ajuste a URL para seu endpoint correto
-                    method: 'GET',
-                    headers: { 'Authorization': 'Bearer ' + token },
-                    dataType: 'json',
-                    success: function (response) {
-                        // (response)
-                        var content = $('#modulos');
-                        response.lessons.forEach(function (aula) {
-                            var lessonsId = aula.course_id;
-                            if (lessonsId == courseId) {
+                            // Ordenar as aulas com base no campo 'sequence'
+                            lessons.sort((a, b) => a.sequence - b.sequence);
 
-
-                                var aulaHtml = `
+                            lessons.forEach(function (aula) {
+                                var lessonsId = aula.course_id;
+                                if (lessonsId == courseId) {
+                                    var aulaHtml = `
                     <button class="btn btn-white btn-animate aula-btn" data-information="${aula.information}" id="aula-${aula.id}" data-title="${aula.name}" data-sequence="${aula.sequence}">
                         ${aula.sequence}: ${aula.name}
                     </button>`;
-                                content.append(aulaHtml);
-
-                                $.ajax({
-                                    url: `${apiUrl}lessons/midia/${aula.id}`,
-                                    method: 'GET',
-                                    headers: { 'Authorization': 'Bearer ' + token },
-                                    success: function (videoResponse) {
-                                        (videoResponse.midia)
-                                        var midia = videoResponse.midia
-                                        // var videoUrl = URL.createObjectURL(videoResponse);
-                                        $(`#aula-${aula.id}`).attr('data-video', midia);
-                                        if (aula.sequence == 1) {
-                                            $('#videoPlayer').attr('src', midia);
+                                    content.append(aulaHtml);
+                                    const sequence = aula.sequence
+                                    $.ajax({
+                                        url: `${apiUrl}/lessons/midia/${aula.id}`,
+                                        method: 'GET',
+                                        headers: { 'Authorization': 'Bearer ' + token },
+                                        success: function (videoResponse) {
+                                            (videoResponse.midia)
+                                            var midia = videoResponse.midia
+                                            // var videoUrl = URL.createObjectURL(videoResponse);
+                                            $(`#aula-${aula.id}`).attr('data-video', midia);
+                                            if (aula.sequence == 1) {
+                                                $('#videoPlayer').attr('src', midia);
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Erro ao obter o vídeo: ', error);
                                         }
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.error('Erro ao obter o vídeo: ', error);
+                                    });
+
+                                    if (sequence == 1) {
+                                        $('#tituloAula').text(`Descrição do Curso: ${courseDescription}`)
                                     }
-                                });
-                                if (aula.sequence == 1) {
-                                    $('#tituloAula').text(`${aula.sequence}: ${aula.information}`)
                                 }
-                            }
-                        });
 
 
-                        $(document).on('click', '.aula-btn', function () {
-                            var sequence = $(this).data('sequence')
-                            var midia = $(this).data('video');
-                            var videoInformation = $(this).data('information');
-                            var videoPlayer = $('#videoPlayer');
-                            var tituloAula = $('#tituloAula');
-                            videoPlayer.attr('src', midia);
-                            videoPlayer[0].load();
-                            tituloAula.text(`${sequence}: ${videoInformation}`)
+                            });
 
-                        });
 
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Erro ao obter as aulas: ', error);
-                    }
-                });
+
+                            $(document).on('click', '.aula-btn', function () {
+                                var sequence = $(this).data('sequence')
+                                var midia = $(this).data('video');
+                                var videoInformation = $(this).data('information');
+                                var videoPlayer = $('#videoPlayer');
+                                var tituloAula = $('#tituloAula');
+                                videoPlayer.attr('src', midia);
+                                videoPlayer[0].load();
+                                tituloAula.text(`Descrição: ${videoInformation}`)
+
+                            });
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Erro ao obter as aulas: ', error);
+                        }
+                    });
+
+                
                 // function buscarNomeUsuario() {
                 //     $.ajax({
                 //         method: 'GET',
@@ -152,7 +163,6 @@
             if (tokenLocalStorage !== null) {
                 var token = localStorage.getItem('sessionToken');
                 $(document).ready(function () {
-                    console.log(apiUrl)
                     function getQueryParams() {
                         const params = new URLSearchParams(window.location.search);
                         const courseId = params.get('course_id');
@@ -165,10 +175,6 @@
 
                     // Decodifica a descrição do curso
                     const decodedDescription = decodeURIComponent(courseDescription);
-
-                    // Exibe os parâmetros no console (ou use-os conforme necessário)
-                    console.log('Course ID:', courseId);
-                    console.log('Course Description:', decodedDescription);
                     const token = localStorage.getItem('sessionToken') || sessionStorage.getItem('sessionToken');
 
                     if (!token) {

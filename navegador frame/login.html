@@ -83,7 +83,11 @@
                 $.ajax({
                     type: 'GET',
                     url: `${apiUrl}/user`,
-                    headers: { 'Authorization': 'Bearer ' + token },
+                    contentType: 'application/json',
+                    headers: { 
+                        'Authorization': 'Bearer ' + token,
+                        'X-Requested-With': 'XMLHttpRequest'
+                     },
                     success: function (response) {
                         if (response.active == 0) {
                             alert('Ops!Sua conta está desativada. Entre em contato conosco para ativar')
@@ -99,16 +103,21 @@
 
         $("#form").on('submit', function (e) {
             e.preventDefault();
-            const email = $('#email').val();
-            const password = $('#password').val();
+            const data = {
+                username: $('#email').val(),
+                password: $('#password').val(),
+            }
             $.ajax({
                 type: 'POST',
                 url: `${apiUrl}/auth`,
-                data: new FormData(this),
+                data: JSON.stringify(data),
                 dataType: 'json',
-                contentType: false,
+                contentType: 'application/json',
                 cache: false,
                 processData: false,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
                 beforeSend: function () {
                     $("#response").html('');
                     $("#loginBtn").val('validando...');

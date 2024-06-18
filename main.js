@@ -20,6 +20,11 @@ function createWindow() {
   win.setContentProtection(true)
   win.loadFile('navegador frame/login.html')
   win.setBackgroundColor('#222')
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    // Impede a abertura de novas janelas
+    return { action: 'deny' };
+  });
+
 
 
   ipc.on('minimizeApp', () => {

@@ -1,22 +1,17 @@
 const $ = require('jquery');
 const { ipcRenderer } = require('electron')
 const ipc = ipcRenderer
-
-
-ipcRenderer.on('env-variables', (event, envVariables) => {
-    // Passe as variáveis de ambiente para o iframe
-    const iframe = document.getElementById('iframe');
-    iframe.contentWindow.postMessage(envVariables, '*'); // '*' permite qualquer origem
-});
-
-// Solicita as variáveis de ambiente do processo principal
-ipcRenderer.send('get-env-variables');
 const maxResBtn = document.querySelector('maximizeBtn')
 const mySidebar = document.getElementById('mySidebar')
 const menu = document.querySelectorAll('.moduloBtn')
 const menuBtn = document.querySelector('.moduloBtn2')
 var isLeftMenuActive = true
 const logout = document.getElementById('logout')
+document.addEventListener('auxclick', function(event) {
+    if (event.button === 1) {  // 1 é o botão do meio do mouse
+      event.preventDefault();
+    }
+  });
 
 document.querySelector('.closeBtn').addEventListener('click', () => {
     ipc.send('closeApp')
