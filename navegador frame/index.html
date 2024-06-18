@@ -127,14 +127,14 @@
             }
         });
         logout.addEventListener('click', () => {
-            $ajax({
+            $.ajax({
                 type: 'POST',
                 url: `${apiUrl}/destroy`,
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('sessionToken')
                 }
             })
-            $ajax({
+            $.ajax({
                 type: 'POST',
                 url: `${apiUrl}/destroy`,
                 headers: {

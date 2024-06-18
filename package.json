@@ -1,23 +1,39 @@
 {
-  "name": "navegador",
+  "name": "phd",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+   "build": {
+    "appId": "com.example.myapp",
+    "mac": {
+      "icon": "navegador frame/images/ICONE-PHD.icns",
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "icon": "navegador frame/images/ICONE-PHD.ico",
+      "target": "nsis"
+    },
+    "linux": {
+      "icon": "navegador frame/images/ICONE-PHD.png",
+      "target": "AppImage"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "electron": "^30.0.5"
+    "electron": "^30.1.1",
+    "electron-builder": "^24.13.3"
   },
   "dependencies": {
     "bourbon": "^7.3.0",
     "dotenv": "^16.4.5",
     "electron-localshortcut": "^3.2.1",
     "express": "^4.19.2",
-    "ffi-napi": "^4.0.3",
     "jquery": "^3.7.1",
     "json-server": "^1.0.0-beta.0",
     "jsonwebtoken": "^9.0.2",
